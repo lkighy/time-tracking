@@ -12,8 +12,9 @@
         position: absolute;
         box-sizing: border-box;
         border-bottom: 1px solid #E6EAF1;
+        border-right: 1px solid #E6EAF1;
         background-color: #fff;
-        z-index: 2;
+        z-index: 3;
         top: 0;
         left: 0;
     }
@@ -25,6 +26,8 @@
         z-index: 2;
         text-align: center;
         line-height: 48px;
+        border-bottom: 1px solid #E6EAF1;
+        background-color: #fff;
         div {
             box-sizing: border-box;
             border-right: 1px solid #E6EAF1;

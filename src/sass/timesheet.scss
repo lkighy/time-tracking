@@ -1,0 +1,41 @@
+.timesheet {
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    >div:nth-child(1) {
+        width: 87px;
+        height: 48px;
+        position: absolute;
+        box-sizing: border-box;
+        border-bottom: 1px solid #E6EAF1;
+        background-color: #fff;
+        z-index: 2;
+        top: 0;
+        left: 0;
+    }
+
+    .ruler {
+        position: absolute;
+        display: flex;
+        height: 48px;
+        z-index: 2;
+        text-align: center;
+        line-height: 48px;
+        div {
+            box-sizing: border-box;
+            border-right: 1px solid #E6EAF1;
+            flex: 1;
+        }
+    }
+    canvas.time {
+        position: absolute;
+        z-index: 1;
+    }
+    canvas.table {
+        position: absolute;
+    }
+}

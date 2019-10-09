@@ -1,0 +1,19 @@
+$sidebarWidth: 375px;
+
+.sidebar {
+  position: absolute;
+  overflow: hidden;
+  width: $sidebarWidth;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.container {
+  position: absolute;
+  overflow: hidden;
+  left: $sidebarWidth;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}

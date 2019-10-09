@@ -1,0 +1,91 @@
+$calendarWidth: 315px;
+$calendarColor: #9cb2cd; // 字体默认颜色
+$noThisMonth: #d8e3f1; // 非本月颜色
+
+.calendar {
+  margin: 0 auto;
+  font-family: "黑体", "微软雅黑", "Microsoft YaHei";
+  font-size: 16px;
+  width: $calendarWidth;
+  color: $calendarColor;
+  text-align: center;
+  line-height: 30px;
+  .year {
+    display: flex;
+    flex-wrap: nowrap;
+    outline: none;
+    a {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      background-color: #fff;
+      border: 1px solid #dee2ec;
+      border-radius: 8px;
+      outline: none;
+      cursor: pointer;
+    }
+    .select {
+      color: #273142;
+      flex: 1;
+      cursor: pointer;
+      .list {
+        color: $calendarColor;
+        display: none;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        position: absolute;
+        width: 240px;
+        height: 120px;
+        background-color: #fff;
+        box-shadow: 0 3px 6px #ddd;
+        border-radius: 8px;
+        left: ($calendarWidth - 232px) / 2;
+        div {
+          line-height: 40px;
+          width: 50px;
+          height: 40px;
+          cursor: pointer;
+        }
+        div:hover {
+          background-color: #eff6ff;
+          border-radius: 16px;
+        }
+      }
+    }
+  }
+
+  .week {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    margin: 4px 0;
+  }
+
+  .days {
+    margin-top: 4px;
+    .pack {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+
+      div {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+      .no-this {
+        color: $noThisMonth;
+      }
+      .current {
+        background-color: #538fff;
+        color: #fff;
+        border-radius: 30px;
+      }
+    }
+    .stay {
+      border-radius: 30px;
+      background-color: #eff6ff;
+    }
+  }
+}

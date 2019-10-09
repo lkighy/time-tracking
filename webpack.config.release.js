@@ -57,8 +57,8 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: "时间追踪",
-            template: "./src/main.js",
-            filename: "./main.js",
+            template: "./src/index.html",
+            filename: "./index.html",
             minify: {
                 collapseWhitespace: true, // 合并多余的空格
                 removeComments: true, // 移除注释

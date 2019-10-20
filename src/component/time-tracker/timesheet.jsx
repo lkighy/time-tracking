@@ -17,7 +17,7 @@ export default class Timesheet extends React.Component {
 
         this.state = {
             weekArr: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
-            height: 1536,
+            height: 1440,
             width: 1680,
             rulerHeight: 48,
             timeWidth: 88,
@@ -142,6 +142,13 @@ export default class Timesheet extends React.Component {
 
     render() {
         let weekDivs = [];
+        let width = this.state.width;
+        let height = this.state.height;
+        let offsetX = this.state.timeWidth;
+        let offsetY = this.state.rulerHeight;
+        let left = this.state.left;
+        let top = this.state.top;
+
         this.state.weekArr.forEach((v, i) => { weekDivs.push(<div key={i}>{v}</div>) });
 
         return (
@@ -155,10 +162,10 @@ export default class Timesheet extends React.Component {
                     className="ruler"
                     ref={this.rulerRef}
                     style={{
-                        width: this.state.width + "px",
-                        height: this.rulerHeight + "px",
+                        width: width + "px",
+                        height: offsetY + "px",
                         top: "0",
-                        left: this.state.left + this.state.timeWidth
+                        left: left + offsetX
                     }}
                 >{weekDivs}</div>
 
@@ -166,27 +173,176 @@ export default class Timesheet extends React.Component {
                     className="time"
                     ref={this.timeRef}
                     style={{
-                        top: this.state.top + this.state.rulerHeight + "px",
+                        top: top + offsetY + "px",
                         left: "0"
                     }}
-                    width= {this.timeWidth}
-                    height= {this.state.height}
+                    width={offsetX}
+                    height={height}
                 ></canvas>
 
                 <canvas
                     className="table"
                     ref={this.tableRef}
                     style={{
-                        top: this.state.top + this.state.rulerHeight,
-                        left: this.state.left + this.state.timeWidth
+                        top: top + offsetY,
+                        left: left + offsetX
                     }}
-                    width={this.state.width}
-                    height={this.state.height}
+                    width={width}
+                    height={height}
                     onMouseDown={this.handleMouseDown}
                     onMouseUp={this.handleRemoveMouse}
                     onMouseLeave={this.handleRemoveMouse}
                 ></canvas>
+                <Labels
+                    width={width}
+                    height={height}
+                />
             </div>
         )
     }
+}
+
+
+// let x = {
+//     id: 1,
+//     date: "2019/9/11",
+//     startTime: "12:14",
+//     endTime: "14:14",
+//     labelName: "出行",
+//     color: "##FEC25A",
+//     content: ""
+// }
+
+
+class Labels extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            labels: [{
+                id: 1,
+                date: "2019/9/11",
+                startTime: "12:14",
+                endTime: "14:14",
+                backgroundColor: "#fec25a",
+                labelName: "出行",
+                color: "#ffffff",
+                content: "今天出行很ok"
+            }, {
+                id: 2,
+                date: "2019/9/12",
+                startTime: "14:14",
+                endTime: "18:14",
+                backgroundColor: "#fec25a",
+                labelName: "出行",
+                color: "#ffffff",
+                content: "今天也是"
+            }]
+        }
+    }
+
+    render() {
+        let labels = [];
+        this.state.labels.forEach((lab) => {
+            labels.push(<Label
+                height={this.props.height}
+                width={this.props.width}
+                key={lab.id}
+                {...lab}
+            />)
+        })
+        return (
+            <div className="labels">
+                {labels}
+            </div>
+        )
+    }
+}
+
+
+class Label extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handlePosition = this.handlePosition.bind(this);
+
+        this.state = {
+            height: 0,
+            top: 0,
+            left: 0
+        }
+    }
+
+    handlePosition() {
+        let parentWidth = this.props.width;
+        let parentHeight = this.props.height;
+
+        let date = this.props.date;
+        // let startTime = this.props.startTime;
+        // let endTime = this.props.endStart;
+
+        let startTime = "12:11";
+        let endTime = "14:14"
+
+        let time = new Date(date);
+        let week = time.getDay();
+
+        // 计算 left
+        let left = week * parseInt(parentWidth) / 7;
+
+        // 计算宽高
+        let [startHour, startMinutes] = startTime.split(":");
+        let [endHour, endMinutes] = endTime.split(":");
+
+        let startTop = (startHour * 60); // 每分钟移动的高度
+        startTop = startTop + parseInt(startMinutes);
+        let endHeight = endHour * 60;
+        endHeight = endHeight + parseInt(endMinutes);
+
+        let scale = parentHeight / 24 / 60;
+
+        let top = startTop * scale;
+        let height = endHeight * scale - top;
+
+        this.setState({ height, top, left });
+    }
+
+    componentDidMount() {
+        this.handlePosition()
+    }
+
+    render() {
+        let top = this.state.top;
+        let left = this.state.left;
+        let height = this.state.height;
+        let backgroundColor = this.props.backgroundColor;
+        let color = this.props.color;
+        let date = this.props.date;
+        let startTime = this.props.startTime;
+        let content = this.props.content;
+        let labelName = this.props.labelName;
+
+        return (
+            <div
+                className="label"
+                height={height}
+                style={{
+                    backgroundColor,
+                    color,
+                    top: top + "px",
+                    left: left + "px",
+                    height: height + "px",
+                }}
+            >
+                <div className="top">
+                    <div className="time"
+                        data-date={date}
+                    >{startTime}</div>
+                    <div className="tag">{labelName}</div>
+                </div>
+                <div className="content">{content}</div>
+            </div>
+        )
+    }
+
 }

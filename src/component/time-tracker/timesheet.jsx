@@ -137,6 +137,7 @@ export default class Timesheet extends React.Component {
     // 移除事件
     handleRemoveMouse(e) {
         // 遇到表格超出,可以在这里添加判断
+        let target = this.tableRef.current;
         target.onmousemove = (e) => e.preventDefault();
     }
 

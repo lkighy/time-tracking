@@ -72,6 +72,7 @@ export default class App extends React.Component {
         }))
     }
 
+    
     handleDate(obj) {
         this.setState({
             date: obj
@@ -92,6 +93,8 @@ export default class App extends React.Component {
                     weekArr: this.state.weekArr, // 一周的显示方法
                     position: this.state.position, // 坐标,
                     handleDate: this.handleDate, // 设置时间
+                    handlePositionX: this.handlePositionX,
+                    handlePositionY: this.handlePositionY,
                     // handleLabels: this.handleLabels, // 设置 labels? 不应该在设置时间的时候修改吗
                     handlePosition: this.handlePosition, // 设置坐标
                 }}

@@ -65,7 +65,7 @@ export default class Timesheet extends React.Component {
         let height = size.height;
         let topSpace = size.height / 24;
 
-        let timeWidth = size.timeWidth;
+        let timeWidth = size.offsetX;
 
         let ctx = this.timeRef.current.getContext("2d");
         ctx.translate(-0.5, -0.5);
@@ -73,9 +73,14 @@ export default class Timesheet extends React.Component {
         ctx.fillStyle = "#ffffff"; // 给标尺填白色,防止透明
         ctx.fillRect(0, 0, 88, height);
 
+        ctx.moveTo(timeWidth + 1, 0);
+        ctx.lineTo(timeWidth + 1, height);
+        ctx.stroke();
+
         ctx.strokeStyle = "#E6EAF1";
         ctx.lineWidth = 1;
 
+        ctx.strokeStyle = "#E6EAF1"; // 设置线条颜色
         ctx.moveTo(timeWidth - 1, 0);
         ctx.lineTo(timeWidth - 1, height);
         ctx.stroke();
@@ -138,19 +143,9 @@ export default class Timesheet extends React.Component {
         // let offsetX = sheetDiv.offsetWidth - width - timeWidth;
         // x > rulerHeight ? 0 : (y < offsetX ? offsetX : x);
 
-        // let offsetY = sheetDiv.offsetHeight - heigth - rulerHeight;
+        // let offsetY = sheetDiv.offsetHeight - height - rulerHeight;
         // y > timeWidth ? 0 : (y < offsetY ? offsetY : y);
 
-        // target.style.top = y + "px";
-        // target.style.left = x + "px";
-
-        // timeDiv.style.top = x + timeWidth + "px";
-        // rulerDiv.style.left = y + rulerHeight + "px";
-
-        // this.setState(() => ({
-        //     top: y,
-        //     left: x
-        // }))
         this.context.handlePosition(x, y);
     }
 

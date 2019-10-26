@@ -1,6 +1,6 @@
 import React from "react";
 
-export const state = {
+const state = {
     weekArr: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
     position: {
         top: 0,
@@ -47,4 +47,6 @@ export const state = {
     }],
 }
 
-export const StateContext = React.createContext(state);
+const StateContext = React.createContext(state);
+
+export {state, StateContext};

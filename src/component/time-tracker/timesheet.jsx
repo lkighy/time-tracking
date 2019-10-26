@@ -1,7 +1,6 @@
 import React from "react";
 
-import StateContext from "context/time_context";
-
+import { StateContext } from "context/time_context";
 
 export default class Timesheet extends React.Component {
     static contextType = StateContext;
@@ -34,24 +33,27 @@ export default class Timesheet extends React.Component {
         let size = this.context.size;
 
         let width = size.width;
+        let height = size.height;
+        let topSpace = size.height / 24;
+        let leftSpace = size.width / 7;
 
         let ctx = this.tableRef.current.getContext("2d");
-        ctx.translate(0.5, 0.5);
+        ctx.translate(-0.5, -0.5);
 
         ctx.strokeStyle = "#E6EAF1"; // 设置线条颜色
         ctx.lineWidth = 1; // 设置线条宽度
 
         // 23根横线 间隔 60 
         for (let x = 0; 24 > x; x++) {
-            ctx.moveTo(0, 12 + x * 64);
-            ctx.lineTo(width, 12 + x * 64);
+            ctx.moveTo(0, x * topSpace);
+            ctx.lineTo(width, x * topSpace);
             ctx.stroke();
         }
 
         // 7 个根竖线 间隔 144
-        for (let x = 0; 7 > x; x++) {
-            ctx.moveTo((x + 1) * (width / 7), 0);
-            ctx.lineTo((x + 1) * (width / 7), width);
+        for (let x = 0; 8 > x; x++) {
+            ctx.moveTo(x * leftSpace, 0);
+            ctx.lineTo(x * leftSpace, height);
             ctx.stroke();
         }
 
@@ -61,10 +63,12 @@ export default class Timesheet extends React.Component {
         let size = this.context.size;
 
         let height = size.height;
+        let topSpace = size.height / 24;
+
         let timeWidth = size.timeWidth;
 
         let ctx = this.timeRef.current.getContext("2d");
-        ctx.translate(0.5, 0.5);
+        ctx.translate(-0.5, -0.5);
 
         ctx.fillStyle = "#ffffff"; // 给标尺填白色,防止透明
         ctx.fillRect(0, 0, 88, height);
@@ -89,7 +93,7 @@ export default class Timesheet extends React.Component {
                 t = `${x} PM`
             }
 
-            ctx.fillText(t, 32, 16 + x * 64);
+            ctx.fillText(t, 32, 6 + x * topSpace);
         }
 
     }
@@ -105,14 +109,14 @@ export default class Timesheet extends React.Component {
         const position = this.context.position;
 
         let width = size.width;
-        let heigth = size.height;
+        let height = size.height;
 
         let rulerHeight = size.offsetY;
         let timeWidth = size.offsetX;
         let sheetDiv = this.sheetRef.current;
 
-        let x = parseInt(position.x);
-        let y = parseInt(position.y);
+        let x = parseInt(position.left);
+        let y = parseInt(position.top);
 
 
         y = y + e.movementY;
@@ -127,8 +131,8 @@ export default class Timesheet extends React.Component {
         if (y > timeWidth) {
             y = 0;
 
-        } else if (y < sheetDiv.offsetHeight - heigth - rulerHeight) {
-            y = sheetDiv.offsetHeight - heigth - rulerHeight;
+        } else if (y < sheetDiv.offsetHeight - height - rulerHeight) {
+            y = sheetDiv.offsetHeight - height - rulerHeight;
         }
 
         // let offsetX = sheetDiv.offsetWidth - width - timeWidth;
@@ -143,10 +147,11 @@ export default class Timesheet extends React.Component {
         // timeDiv.style.top = x + timeWidth + "px";
         // rulerDiv.style.left = y + rulerHeight + "px";
 
-        this.setState(() => ({
-            top: y,
-            left: x
-        }))
+        // this.setState(() => ({
+        //     top: y,
+        //     left: x
+        // }))
+        this.context.handlePosition(x, y);
     }
 
     handleMouseDown(e) {
@@ -158,18 +163,22 @@ export default class Timesheet extends React.Component {
         // 遇到表格超出,可以在这里添加判断
         let target = this.tableRef.current;
         target.onmousemove = (e) => e.preventDefault();
+
     }
 
     render() {
+        let size = this.context.size;
+        let position = this.context.position;
         let weekDivs = [];
-        let width = this.state.width;
-        let height = this.state.height;
-        let offsetX = this.state.timeWidth;
-        let offsetY = this.state.rulerHeight;
-        let left = this.state.left;
-        let top = this.state.top;
+        let width = size.width;
+        let height = size.height;
+        let offsetX = size.offsetX;
+        let offsetY = size.offsetY;
+        let left = position.left;
+        let top = position.top;
+        let labels = this.context.labels;
 
-        this.state.weekArr.forEach((v, i) => { weekDivs.push(<div key={i}>{v}</div>) });
+        this.context.weekArr.forEach((v, i) => { weekDivs.push(<div key={i}>{v}</div>) });
 
         return (
             <div
@@ -214,6 +223,7 @@ export default class Timesheet extends React.Component {
                     onMouseLeave={this.handleRemoveMouse}
                 ></canvas>
                 <Labels
+                    labels={labels}
                     width={width}
                     height={height}
                     top={top + offsetY}
@@ -228,33 +238,11 @@ export default class Timesheet extends React.Component {
 class Labels extends React.Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            labels: [{
-                id: 1,
-                date: "2019/9/11",
-                startTime: "12:00",
-                endTime: "23:59",
-                backgroundColor: "#fec25a",
-                labelName: "出行",
-                color: "#ffffff",
-                content: "今天出行很ok"
-            }, {
-                id: 2,
-                date: "2019/9/12",
-                startTime: "14:14",
-                endTime: "23:59",
-                backgroundColor: "#fec25a",
-                labelName: "出行",
-                color: "#ffffff",
-                content: "今天也是"
-            }]
-        }
     }
 
     render() {
         let labels = [];
-        this.state.labels.forEach((lab) => {
+        this.props.labels.forEach((lab) => {
             labels.push(<Label
                 height={this.props.height}
                 width={this.props.width}
@@ -287,6 +275,7 @@ class Label extends React.Component {
         this.handlePosition = this.handlePosition.bind(this);
 
         this.state = {
+            width: 0,
             height: 0,
             top: 0,
             left: 0
@@ -301,9 +290,6 @@ class Label extends React.Component {
         let startTime = this.props.startTime;
         let endTime = this.props.endTime;
 
-        // let startTime = "12:00";
-        // let endTime = "23:59"
-
         let time = new Date(date);
         let week = time.getDay();
 
@@ -314,17 +300,21 @@ class Label extends React.Component {
         let [startHour, startMinutes] = startTime.split(":");
         let [endHour, endMinutes] = endTime.split(":");
 
-        let startTop = (startHour * 60); // 每分钟移动的高度
-        startTop = startTop + parseInt(startMinutes);
-        let endHeight = endHour * 60;
-        endHeight = endHeight + parseInt(endMinutes);
-
         let scale = parentHeight / 24 / 60;
 
-        let top = startTop * scale;
-        let height = endHeight * scale - top;
+        let top = scale * (startHour * 60 + parseInt(startMinutes)); // 起始高度
+        let height = scale * ((endHour - startHour) * 60 + parseInt(endMinutes)); // 终止高度
 
-        this.setState({ height, top, left });
+        // let startTop = (startHour * scale); // 每分钟移动的高度
+        // startTop = startTop + parseInt(startMinutes);
+        // let endHeight = endHour * scale;
+        // endHeight = endHeight + parseInt(endMinutes);
+
+        // // let top = startTop * scale;
+        // let height = endHeight - startTop;
+        let width = parseInt(parentWidth) / 7 - 8;
+
+        this.setState({ width, height, top, left });
     }
 
     componentDidMount() {
@@ -334,6 +324,7 @@ class Label extends React.Component {
     render() {
         let top = this.state.top;
         let left = this.state.left;
+        let width = this.state.width;
         let height = this.state.height;
         let backgroundColor = this.props.backgroundColor;
         let color = this.props.color;
@@ -349,8 +340,9 @@ class Label extends React.Component {
                 style={{
                     backgroundColor,
                     color,
+                    width: width + "px",
                     top: top + "px",
-                    left: left + 20 + "px",
+                    left: left + 4 + "px",
                     height: height + "px",
                 }}
             >

@@ -22,7 +22,6 @@
   .ruler {
     position: absolute;
     display: flex;
-    height: 48px;
     z-index: 2;
     text-align: center;
     line-height: 48px;
@@ -44,10 +43,8 @@
 
   div.labels {
     position: absolute;
-
     .label {
       position: absolute;
-      width: 200px;
       border-radius: 6px;
       overflow: hidden;
       .top {

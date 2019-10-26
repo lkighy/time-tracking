@@ -21,5 +21,10 @@ module.exports = {
             template: "./src/index.html",
             filename: "./index.html"
         })
-    ]
+    ],
+    resolve: {
+        alias: {
+            context: path.resolve(__dirname, "src/context")
+        }
+    }
 }

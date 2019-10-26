@@ -1,12 +1,11 @@
 import Timetracker from "./timetracker.jsx";
 import React from "react";
-import StateContext from "context/time_context";
-
-// const Context = React.createContext();
-
+import {StateContext} from "context/time_context";
 
 
 export default class App extends React.Component {
+
+    static contextType = StateContext;  
     constructor(props) {
         super(props);
 
@@ -24,8 +23,8 @@ export default class App extends React.Component {
                 left: 0
             },
             size: {
-                width: 1440,
-                height: 1680,
+                width: 1680,
+                height: 1440,
                 offsetX: 88,
                 offsetY: 48,
             },
@@ -46,16 +45,16 @@ export default class App extends React.Component {
             labels: [{
                 id: 1,
                 date: "2019/10/25",
-                startTime: "12:00",
+                startTime: "00:00",
                 endTime: "15:00",
                 backgroundColor: "#fec25a",
                 labelName: "出行",
                 color: "#ffffff",
                 content: "今天出行很 OK 啦"
             }, {
-                id: 1,
+                id: 2,
                 date: "2019/10/24",
-                startTime: "14:00",
+                startTime: "07:00",
                 endTime: "16:00",
                 backgroundColor: "#fec25a",
                 labelName: "出行",
@@ -67,8 +66,9 @@ export default class App extends React.Component {
 
 
     handlePosition(x, y) {
+        
         this.setState(() => ({
-            size: { left: x, top: y }
+            position: { left: x, top: y }
         }))
     }
 
@@ -85,7 +85,6 @@ export default class App extends React.Component {
         return (
             <StateContext.Provider
                 value={{
-
                     size: this.state.size, // 尺寸
                     date: this.state.date, // 时间
                     color: this.state.color,

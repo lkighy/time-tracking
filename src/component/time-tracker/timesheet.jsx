@@ -1,6 +1,10 @@
 import React from "react";
 
+import StateContext from "context/time_context";
+
+
 export default class Timesheet extends React.Component {
+    static contextType = StateContext;
     constructor(props) {
         super(props);
 
@@ -27,8 +31,9 @@ export default class Timesheet extends React.Component {
     }
 
     handleDrawTable() { // 绘制表格线条
-        let width = this.state.width;
-        let height = this.state.height;
+        let size = this.context.size;
+
+        let width = size.width;
 
         let ctx = this.tableRef.current.getContext("2d");
         ctx.translate(0.5, 0.5);
@@ -53,8 +58,10 @@ export default class Timesheet extends React.Component {
     }
 
     handleDrawTime() { // 绘制时间表格
-        let height = this.state.height;
-        let timeWidth = this.state.timeWidth;
+        let size = this.context.size;
+
+        let height = size.height;
+        let timeWidth = size.timeWidth;
 
         let ctx = this.timeRef.current.getContext("2d");
         ctx.translate(0.5, 0.5);
@@ -94,32 +101,41 @@ export default class Timesheet extends React.Component {
 
     // 鼠标移动时
     handleMouseMove(e) {
-        let width = this.state.width;
-        let heigth = this.state.height;
+        const size = this.context.size;
+        const position = this.context.position;
 
-        let rulerHeight = this.state.rulerHeight;
-        let timeWidth = this.state.timeWidth;
+        let width = size.width;
+        let heigth = size.height;
+
+        let rulerHeight = size.offsetY;
+        let timeWidth = size.offsetX;
         let sheetDiv = this.sheetRef.current;
 
-        let x = parseInt(this.state.left);
-        let y = parseInt(this.state.top);
+        let x = parseInt(position.x);
+        let y = parseInt(position.y);
 
 
         y = y + e.movementY;
         x = x + e.movementX;
 
-        if (x >= rulerHeight) {
+        if (x > rulerHeight) {
             x = 0;
         } else if (x < sheetDiv.offsetWidth - width - timeWidth) {
             x = sheetDiv.offsetWidth - width - timeWidth;
         }
 
-        if (y >= timeWidth) {
+        if (y > timeWidth) {
             y = 0;
 
         } else if (y < sheetDiv.offsetHeight - heigth - rulerHeight) {
             y = sheetDiv.offsetHeight - heigth - rulerHeight;
         }
+
+        // let offsetX = sheetDiv.offsetWidth - width - timeWidth;
+        // x > rulerHeight ? 0 : (y < offsetX ? offsetX : x);
+
+        // let offsetY = sheetDiv.offsetHeight - heigth - rulerHeight;
+        // y > timeWidth ? 0 : (y < offsetY ? offsetY : y);
 
         // target.style.top = y + "px";
         // target.style.left = x + "px";
@@ -127,7 +143,10 @@ export default class Timesheet extends React.Component {
         // timeDiv.style.top = x + timeWidth + "px";
         // rulerDiv.style.left = y + rulerHeight + "px";
 
-        this.setState(() => ({ top: y, left: x }))
+        this.setState(() => ({
+            top: y,
+            left: x
+        }))
     }
 
     handleMouseDown(e) {
@@ -197,22 +216,13 @@ export default class Timesheet extends React.Component {
                 <Labels
                     width={width}
                     height={height}
+                    top={top + offsetY}
+                    left={left + offsetX}
                 />
             </div>
         )
     }
 }
-
-
-// let x = {
-//     id: 1,
-//     date: "2019/9/11",
-//     startTime: "12:14",
-//     endTime: "14:14",
-//     labelName: "出行",
-//     color: "##FEC25A",
-//     content: ""
-// }
 
 
 class Labels extends React.Component {
@@ -223,8 +233,8 @@ class Labels extends React.Component {
             labels: [{
                 id: 1,
                 date: "2019/9/11",
-                startTime: "12:14",
-                endTime: "14:14",
+                startTime: "12:00",
+                endTime: "23:59",
                 backgroundColor: "#fec25a",
                 labelName: "出行",
                 color: "#ffffff",
@@ -233,7 +243,7 @@ class Labels extends React.Component {
                 id: 2,
                 date: "2019/9/12",
                 startTime: "14:14",
-                endTime: "18:14",
+                endTime: "23:59",
                 backgroundColor: "#fec25a",
                 labelName: "出行",
                 color: "#ffffff",
@@ -252,8 +262,17 @@ class Labels extends React.Component {
                 {...lab}
             />)
         })
+
+        let top = this.props.top;
+        let left = this.props.left;
         return (
-            <div className="labels">
+            <div
+                className="labels"
+                style={{
+                    top,
+                    left
+                }}
+            >
                 {labels}
             </div>
         )
@@ -279,11 +298,11 @@ class Label extends React.Component {
         let parentHeight = this.props.height;
 
         let date = this.props.date;
-        // let startTime = this.props.startTime;
-        // let endTime = this.props.endStart;
+        let startTime = this.props.startTime;
+        let endTime = this.props.endTime;
 
-        let startTime = "12:11";
-        let endTime = "14:14"
+        // let startTime = "12:00";
+        // let endTime = "23:59"
 
         let time = new Date(date);
         let week = time.getDay();
@@ -331,7 +350,7 @@ class Label extends React.Component {
                     backgroundColor,
                     color,
                     top: top + "px",
-                    left: left + "px",
+                    left: left + 20 + "px",
                     height: height + "px",
                 }}
             >

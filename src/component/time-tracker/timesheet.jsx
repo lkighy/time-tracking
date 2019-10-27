@@ -127,11 +127,24 @@ export default class Timesheet extends React.Component {
         y = y + e.movementY;
         x = x + e.movementX;
 
-        let offsetX = sheetDiv.offsetWidth - width - timeWidth;
-        x = x > 0 ? 0 : (y < offsetX ? offsetX : x);
+        if (x > 0) {
+            x = 0;
+        } else if (x < sheetDiv.offsetWidth - width - timeWidth) {
+            x = sheetDiv.offsetWidth - width - timeWidth;
+        }
 
-        let offsetY = sheetDiv.offsetHeight - height - rulerHeight;
-        y = y > 0 ? 0 : (y < offsetY ? offsetY : y);
+        if (y > 0) {
+            y = 0;
+
+        } else if (y < sheetDiv.offsetHeight - height - rulerHeight) {
+            y = sheetDiv.offsetHeight - height - rulerHeight;
+        }
+
+        // let offsetX = sheetDiv.offsetWidth - width - timeWidth;
+        // x = x > 0 ? 0 : (y < offsetX ? offsetX : x);
+
+        // let offsetY = sheetDiv.offsetHeight - height - rulerHeight;
+        // y = y > 0 ? 0 : (y < offsetY ? offsetY : y);
 
         this.context.handlePosition(x, y);
     }

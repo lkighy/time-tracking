@@ -1,11 +1,11 @@
 import Timetracker from "./timetracker.jsx";
 import React from "react";
-import {StateContext} from "context/time_context";
+import { StateContext } from "context/time_context";
 
 
 export default class App extends React.Component {
 
-    static contextType = StateContext;  
+    static contextType = StateContext;
     constructor(props) {
         super(props);
 
@@ -66,13 +66,14 @@ export default class App extends React.Component {
 
 
     handlePosition(x, y) {
-        
+        // x = x > rulerHeight ? 0 : (y < offsetX ? offsetX : x)
+        // y = y > timeWidth ? 0 : (y < offsetY ? offsetY : y)
         this.setState(() => ({
             position: { left: x, top: y }
         }))
     }
 
-    
+
     handleDate(obj) {
         this.setState({
             date: obj

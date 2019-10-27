@@ -1,6 +1,6 @@
 // import  React from "react";
-import "./sass/calendar.scss";
+import "./scss/calendar.scss";
 
-import "./sass/timetracker.scss";
+import "./scss/timetracker.scss";
 
-import "./sass/timesheet.scss";
+import "./scss/timesheet.scss";

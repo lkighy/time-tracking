@@ -17,3 +17,17 @@ $sidebarWidth: 375px;
   top: 0;
   bottom: 0;
 }
+
+.box {
+  width: 315px;
+  margin: 0 auto;
+  .top {
+    height: 24px;
+    line-height: 24px;
+    margin-bottom: 4px;
+    .tagName {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+}

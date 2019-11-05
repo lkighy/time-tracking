@@ -1,4 +1,7 @@
 .timesheet {
+  :active {
+    cursor: move;
+  }
   position: absolute;
   overflow: hidden;
   left: 0;
@@ -20,6 +23,10 @@
   }
 
   .ruler {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     position: absolute;
     display: flex;
     z-index: 2;
@@ -53,10 +60,10 @@
         opacity: 0.1;
         color: #fff;
         .time {
-            float: left;
+          float: left;
         }
         .tag {
-            float: right;
+          float: right;
         }
       }
       .content {

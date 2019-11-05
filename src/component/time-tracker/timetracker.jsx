@@ -1,10 +1,14 @@
 import React from "react";
 import Calendar from "./calendar.jsx";
 import Timesheet from "./timesheet.jsx";
+import Projects from "./project.jsx";
+import AddProject from "./addProject.jsx";
+import { StateContext } from "context/time_context";
 
 // import "scss/Timetracker.scss";
 
 export default class Timetracker extends React.Component {
+    static contextType = StateContext;
     constructor(props) {
         super(props);
     }
@@ -16,10 +20,16 @@ export default class Timetracker extends React.Component {
                     <Box tagName="日历">
                         <Calendar />
                     </Box>
+                    <Box tagName="日程">
+                        <Projects
+                        labels={this.context.labels}
+                        />
+                    </Box>
                 </div>
                 <div className="container">
                     <Timesheet />
                 </div>
+                <AddProject />
             </div>
         )
     }

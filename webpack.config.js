@@ -24,7 +24,8 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            context: path.resolve(__dirname, "src/context")
+            context: path.resolve(__dirname, "src/context"),
+            scss: path.resolve(__dirname, "src/scss"),
         }
     }
 }

@@ -3,6 +3,10 @@ $calendarColor: #9cb2cd; // 字体默认颜色
 $noThisMonth: #d8e3f1; // 非本月颜色
 
 .calendar {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   margin: 0 auto;
   font-family: "黑体", "微软雅黑", "Microsoft YaHei";
   font-size: 16px;
@@ -19,7 +23,7 @@ $noThisMonth: #d8e3f1; // 非本月颜色
       width: 28px;
       height: 28px;
       background-color: #fff;
-      border: 1px solid #dee2ec;
+      // border: 1px solid #dee2ec;
       border-radius: 8px;
       outline: none;
       cursor: pointer;

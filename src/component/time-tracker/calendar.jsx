@@ -7,13 +7,13 @@ export default class Calendar extends React.Component {
         this.handleDays = this.handleDays.bind(this);
         this.headleLastMonthSwitch = this.headleLastMonthSwitch.bind(this);
         this.headleNextMonthSwitch = this.headleNextMonthSwitch.bind(this);
-        this.handleSetDate = this.handleSetDate.bind(this);
+        // this.handleSetDate = this.handleSetDate.bind(this);
 
         this.state = {
             monthArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            toYear: 0, // 选中的年份
-            toMonth: 0, // 选中的月份
-            today: 0, // 表示选中哪一天
+            // toYear: 0, // 选中的年份
+            // toMonth: 0, // 选中的月份
+            // today: 0, // 表示选中哪一天
             year: 0, // 表示日历显示的当前年份
             month: 0, // 表示日历显示的当前月份
             inDays: {
@@ -27,9 +27,9 @@ export default class Calendar extends React.Component {
     componentDidMount() { // 挂载
         let date = new Date();
         this.setState({
-            toYear: this.props.year || date.getFullYear(),
-            toMonth: this.props.month || date.getMonth(),
-            today: this.props.today || date.getDate(),
+            // toYear: this.props.year || date.getFullYear(),
+            // toMonth: this.props.month || date.getMonth(),
+            // today: this.props.today || date.getDate(),
             year: this.props.year || date.getFullYear(),
             month: this.props.month || date.getMonth(),
         })
@@ -91,17 +91,21 @@ export default class Calendar extends React.Component {
         this.handleDays(year, month);
     }
 
-    handleSetDate(year, month, day) {
-        // 设置日期
-        this.setState(() => ({
-            toYear: year - 0,
-            toMonth: month - 0,
-            today: day - 0
-        }))
+    // handleSetDate(year, month, day) {
+    //     // 设置日期
+    //     this.setState(() => ({
+    //         toYear: year - 0,
+    //         toMonth: month - 0,
+    //         today: day - 0
+    //     }))
 
-    }
+    // }
 
     render() {
+        let toYear = this.props.toYear;
+        let toMonth = this.props.toMonth;
+        let today = this.props.today;
+
         return (
             <div className="calendar">
                 <YearSwitch
@@ -122,13 +126,13 @@ export default class Calendar extends React.Component {
                 </div>
                 <DaysList
                     isStay={true}
-                    toMonth={this.state.toMonth}
-                    toYear={this.state.toYear}
-                    today={this.state.today}
+                    toMonth={toMonth}
+                    toYear={toYear}
+                    today={today}
                     year={this.state.year}
                     month={this.state.month}
                     inDays={this.state.inDays}
-                    handleSetDate={this.handleSetDate}
+                    handleSetDate={this.props.handleSetDate}
                 />
             </div>
         )
@@ -162,11 +166,7 @@ class DaysList extends React.Component {
     }
 
     handleSwitchDay(e) {
-        // console.log(e.target.dataset.date)
-        // // date = e.target.dataset.date
-        // // if (this.props.handleSetDate) {
-        // //     this.props.handleSetDate(date)
-        // // }
+
         let year = e.target.dataset.year;
         let month = e.target.dataset.month;
         let day = e.target.dataset.day;
@@ -180,10 +180,6 @@ class DaysList extends React.Component {
         let toYear = this.props.toYear;
         let today = this.props.today;
         let inDays = this.props.inDays;
-
-        // let thisMonth = year + "/" + month;
-        // let lastMonth = month > 0 ? year + "/" + (month - 1) : (year - 1) + "/" + 11;
-        // let nextMonth = month < 11 ? year + "/" + (month + 1) : (year + 1) + "/" + 0;
 
         let days = [];
 

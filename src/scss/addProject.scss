@@ -1,7 +1,4 @@
 .add_project {
-  :active {
-    cursor: move;
-  }
   position: relative;
   .add_button {
     color: #fff;
@@ -17,51 +14,26 @@
     background-color: skyblue;
   }
   .add_form {
+    // padding: 8px;
     text-align: center;
     position: fixed;
-    width: 320px;
-    height: 480px;
-    background-color: #fff;
+    width: 375px;
+    // height: 480px;
+    background-color: #fefefe;
     border-radius: 8px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0px 3px 6px #e3e3e3;
+    box-shadow: 0px 0px 12px #dfdfdf;
     z-index: 10;
-    padding: 12px 8px;
-
-    input {
-      display: inline-block;
-      margin: 12px 0;
-    }
-
-    .date_select {
-      width: 80%;
-      height: 24px;
-      margin: 8px auto;
-      border-radius: 4px;
-      border: 1px solid #e3e3e3;
-    } 
-
-    .date_select_start {
-      width: 34%;
-      height: 24px;
-      border-radius: 4px;
-      border: 1px solid #e3e3e3;
-      padding-right: 14px;
-    }
-
-    .date_select_end {
-      width: 34%;
-      height: 24px;
-      border-radius: 4px;
-      border: 1px solid #e3e3e3;
-      padding-left: 14px;
-    }
+    padding: 36px 4px;
 
     .content {
+      cursor: auto;
+      padding: 8px;
+      outline: none;
       resize: none;
-      width: 80%;
+      width: 300px;
       height: 120px;
       border-radius: 8px;
       border: 1px solid #e3e3e3;
@@ -74,5 +46,27 @@
       border-radius: 8px;
       height: 32px;
     }
+  }
+}
+
+.date-select {
+  position: relative;
+  width: 315px;
+  margin: 8px auto;
+  input {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    padding: 4px 0;
+    color: #555;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+  }
+  .date-calendar {
+    padding: 8px 0;
+    position: absolute;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #eee;
   }
 }

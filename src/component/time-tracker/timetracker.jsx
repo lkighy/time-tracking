@@ -16,6 +16,7 @@ export default class Timetracker extends React.Component {
             toYear: 0,
             toMonth: 0,
             today: 0,
+            dateRange: [],
         }
 
         this.handleSetDate = this.handleSetDate.bind(this);
@@ -23,18 +24,40 @@ export default class Timetracker extends React.Component {
 
     componentDidMount() {
         let date = new Date();
-        this.setState({
-            toYear: this.props.year || date.getFullYear(),
-            toMonth: this.props.month || date.getMonth(),
-            today: this.props.today || date.getDate(),
-        })
+        // this.setState({
+        //     toYear: this.props.year || date.getFullYear(),
+        //     toMonth: this.props.month || date.getMonth(),
+        //     today: this.props.today || date.getDate(),
+        // })
+        this.handleSetDate(
+            this.props.year || date.getFullYear(),
+            this.props.month || date.getMonth(),
+            this.props.today || date.getDate(),
+            )
     }
 
+    // handleSetDateRange() {
+    //     // 设置什么呢?
+    // }
+
     handleSetDate(year, month, day) {
+        // 那么的话需要什么呢?
+        // 获取这周的日期,那么的话
+        let date = new Date(year, month, day);
+        let week = date.getDay() // 这是这周的星期几?
+        // 获取周日的日期, 获取周六的日期
+        let sun = day - 0 - week;
+        let sat = day - 0 + 6 - week;
+        let dateRange = [];
+        for (let i = sun; i < sat; i++) {
+            let todate = new Date(year, month, i);
+            dateRange.push(todate.getFullYear() + "/" + (todate.getMonth() - 0 + 1)+ "/" + todate.getDate());
+        }
         this.setState(() => ({
             toYear: year - 0,
             toMonth: month - 0,
             today: day - 0,
+            dateRange: dateRange,
         }))
     }
 
@@ -58,7 +81,12 @@ export default class Timetracker extends React.Component {
                     </Box>
                 </div>
                 <div className="container">
-                    <Timesheet />
+                    <Timesheet 
+                        year={this.state.toYear}
+                        month={this.state.toMonth}
+                        day={this.state.today}
+                        dateRange={this.state.dateRange}
+                    />
                 </div>
                 <AddProject
                     colors={this.context.colors}

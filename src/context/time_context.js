@@ -71,18 +71,24 @@ const state = {
         date: "2019/10/25",
         startTime: "12:00",
         endTime: "15:00",
-        backgroundColor: "#fec25a",
-        labelName: "出行",
-        color: "#ffffff",
+        color: {
+            id: 1,
+            labelName: "出行",
+            fontColor: "#ffffff",
+            backgroundColor: "#fec25a"
+        },
         content: "今天出行很 OK 啦"
     }, {
         id: 2,
         date: "2019/10/24",
         startTime: "14:00",
         endTime: "16:00",
-        backgroundColor: "#fec25a",
-        labelName: "出行",
-        color: "#ffffff",
+        color: {
+            id: 1,
+            labelName: "出行",
+            fontColor: "#ffffff",
+            backgroundColor: "#fec25a",
+        },
         content: "今天也很 OK 喔"
     }],
 }

@@ -223,6 +223,10 @@ export default class Timesheet extends React.Component {
                     height={height}
                     top={top + offsetY}
                     left={left + offsetX}
+                    year={this.props.year}
+                    month={this.props.month}
+                    day={this.props.day}
+                    dateRange={this.props.dateRange}
                 />
             </div>
         )
@@ -246,13 +250,25 @@ class Labels extends React.Component {
 
     render() {
         let labels = [];
+        let year = this.props.year;
+        let month = this.props.month;
+        let day = this.props.day;
+        let date = new Date(year, month, day);
+        // 最小日期
+        let week = date.getDay() // 得到 0 - 6 中一的一个数字, 13 - 2 - 1 = 11 13 + 7 - 2 - 1 = 16
+        // 最大日期
         this.props.labels.forEach((lab) => {
-            labels.push(<Label
-                height={this.props.height}
-                width={this.props.width}
-                key={lab.id}
-                {...lab}
-            />)
+            // 获取获取日期,判断是否在该选中的时间内, 如果不在,则不添加
+            // 判断日期
+            if (this.props.dateRange.join(",").indexOf(lab.date) >= 0) {
+                labels.push(<Label
+                    height={this.props.height}
+                    width={this.props.width}
+                    key={lab.id}
+                    {...lab}
+                />)
+            }
+            
         })
 
         let top = this.props.top;
@@ -330,12 +346,12 @@ class Label extends React.Component {
         let left = this.state.left;
         let width = this.state.width;
         let height = this.state.height;
-        let backgroundColor = this.props.backgroundColor;
-        let color = this.props.color;
+        let backgroundColor = this.props.color.backgroundColor;
+        let fontColor = this.props.color.fontColor;
         let date = this.props.date;
         let startTime = this.props.startTime;
         let content = this.props.content;
-        let labelName = this.props.labelName;
+        let labelName = this.props.color.labelName;
 
         return (
             <div
@@ -343,7 +359,7 @@ class Label extends React.Component {
                 height={height}
                 style={{
                     backgroundColor,
-                    color,
+                    color: fontColor,
                     width: width + "px",
                     top: top + "px",
                     left: left + 4 + "px",

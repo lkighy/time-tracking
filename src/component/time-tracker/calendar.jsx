@@ -125,7 +125,7 @@ export default class Calendar extends React.Component {
                     <div>六</div>
                 </div>
                 <DaysList
-                    isStay={true}
+                    isStay={this.props.isStay}
                     toMonth={toMonth}
                     toYear={toYear}
                     today={today}
@@ -215,6 +215,7 @@ class DaysList extends React.Component {
                 let className = "";
                 if (toYear == inYear && toMonth == inMonth && day == today) {
                     className += "current ";
+                    isStay = true
                 }
 
                 if (inYear != year || inMonth != month) {

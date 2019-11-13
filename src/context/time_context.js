@@ -20,11 +20,51 @@ const state = {
         month: 0,
         date: 0
     },
-    color: [{
+    colors: [{
         id: 1,
         labelName: "出行",
         color: "#ffffff",
         backgroundColor: "#fec25a"
+    },{
+        id: 2,
+        labelName: "旅游",
+        color: "#ffffff",
+        backgroundColor: "#1e5b5e"
+    },{
+        id: 3,
+        labelName: "哈哈",
+        color: "#ffffff",
+        backgroundColor: "skyblue"
+    },{
+        id: 4,
+        labelName: "哈哈",
+        color: "#ffffff",
+        backgroundColor: "skyblue"
+    },{
+        id: 5,
+        labelName: "哈哈",
+        color: "#ffffff",
+        backgroundColor: "skyblue"
+    },{
+        id: 6,
+        labelName: "哈哈",
+        color: "#ffffff",
+        backgroundColor: "skyblue"
+    },{
+        id: 7,
+        labelName: "哈哈",
+        color: "#ffffff",
+        backgroundColor: "skyblue"
+    },{
+        id: 8,
+        labelName: "哈哈",
+        color: "#ffffff",
+        backgroundColor: "skyblue"
+    },{
+        id: 9,
+        labelName: "哈哈",
+        color: "#ffffff",
+        backgroundColor: "skyblue"
     }],
     labels: [{
         id: 1,
@@ -36,7 +76,7 @@ const state = {
         color: "#ffffff",
         content: "今天出行很 OK 啦"
     }, {
-        id: 1,
+        id: 2,
         date: "2019/10/24",
         startTime: "14:00",
         endTime: "16:00",

@@ -48,6 +48,7 @@ export default class Timetracker extends React.Component {
                             toMonth={this.state.toMonth}
                             today={this.state.today}
                             handleSetDate={this.handleSetDate}
+                            isStay={true}
                         />
                     </Box>
                     <Box tagName="日程">
@@ -59,7 +60,9 @@ export default class Timetracker extends React.Component {
                 <div className="container">
                     <Timesheet />
                 </div>
-                <AddProject />
+                <AddProject
+                    colors={this.context.colors}
+                />
             </div>
         )
     }

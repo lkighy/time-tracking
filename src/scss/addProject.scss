@@ -1,6 +1,7 @@
 .add_project {
   position: relative;
   .add_button {
+    cursor: pointer;
     color: #fff;
     position: fixed;
     right: 64px;
@@ -12,6 +13,9 @@
     width: 48px;
     border-radius: 50%;
     background-color: skyblue;
+  }
+  .flac {
+    transform: rotate(45deg);
   }
   .add_form {
     // padding: 8px;
@@ -27,6 +31,23 @@
     box-shadow: 0px 0px 12px #dfdfdf;
     z-index: 10;
     padding: 36px 4px;
+
+    .tagname {
+      padding: 4px 0;
+      font-weight: 700;
+      font-size: 14px;
+      color: #797979;
+      width: 315px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    >.box {
+      padding: 4px 0;
+      width: 315px;
+      margin: 0 auto;
+      border-radius: 8px;
+    }
 
     .content {
       cursor: auto;
@@ -45,6 +66,18 @@
       border: none;
       border-radius: 8px;
       height: 32px;
+    }
+    >.time-selects {
+      width: 315px;
+      margin: 0 auto;
+      display: flex;
+      padding: 12px;
+      >div:nth-child(2) {
+        font-size: 32px;
+        width: 84px;
+        height: 70px;
+        line-height: 70px;
+      }
     }
   }
 }
@@ -68,5 +101,45 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 8px #eee;
+  }
+}
+
+.time-select {
+  display: inline-block;
+  display: flex;
+  width: 58px;
+  font-size: 20px;
+  > div {
+    height: 64px;
+    flex: 1;
+  }
+  > div:nth-child(2) {
+    line-height: 72px;
+  }
+  .prev,
+  .next {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #ddd;
+  }
+}
+
+.class-select {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  .tag {
+    margin: 4px;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  >.current {
+    border: 1px solid green;
   }
 }

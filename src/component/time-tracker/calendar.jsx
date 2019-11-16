@@ -33,8 +33,8 @@ export default class Calendar extends React.Component {
             // toYear: this.props.year || date.getFullYear(),
             // toMonth: this.props.month || date.getMonth(),
             // today: this.props.today || date.getDate(),
-            year: this.props.year || date.getFullYear(),
-            month: this.props.month || date.getMonth(),
+            year: this.props.toYear || date.getFullYear(),
+            month: this.props.toMonth || date.getMonth(),
         })
         this.handleDays(date.getFullYear(), date.getMonth());
     }

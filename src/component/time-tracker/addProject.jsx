@@ -14,6 +14,7 @@ export default class AddProject extends React.Component {
             startMinute: 0,
             endHour: 0,
             endMinute: 0,
+            color: {},
             calendarDisplay: false
         }
         this.handleSetDate = this.handleSetDate.bind(this)
@@ -21,6 +22,7 @@ export default class AddProject extends React.Component {
         this.handleSetEndTime = this.handleSetEndTime.bind(this)
         this.handleCalendarDisplay = this.handleCalendarDisplay.bind(this)
         this.handleFlac = this.handleFlac.bind(this)
+        this.handleSetColor = this.handleSetColor.bind(this)
     }
 
     handleFlac() {
@@ -38,12 +40,13 @@ export default class AddProject extends React.Component {
             startMinute: date.getMinutes(),
             endHour: date.getHours(),
             endMinute: date.getMinutes(),
+            color: this.props.colors[0],
         })
     }
 
     handleCalendarDisplay() {
         this.setState({
-            calendarDisplay: true,
+            calendarDisplay: !this.state.calendarDisplay,
         })
     }
 
@@ -55,6 +58,18 @@ export default class AddProject extends React.Component {
             today: day - 0,
         }))
     }
+
+    handleSetColor(e) {
+        this.setState({
+            color: {
+                id: e.target.dataset.id,
+                labelName: e.target.dataset.labelName,
+                color: e.target.dataset.color,
+                backgroundColor: e.target.dataset.backgroundColor
+            }
+        })
+    }
+
     handleSetStartTime(hour, minute) {
         this.setState(() => ({
             startHour: hour,
@@ -107,6 +122,8 @@ export default class AddProject extends React.Component {
                     <div className="box">
                         <ClassSelect
                             colors={this.props.colors}
+                            color={this.state.color}
+                            handleSetColor={this.handleSetColor}
                         />
                     </div>
                     {/* 选择东西 */}
@@ -133,16 +150,25 @@ class ClassSelect extends React.Component {
     render() {
         // 接收得 props 参数 有 colors:
         // 现在你要怎么做呢
+
+        // 如何算是选中呢
         let colors = this.props.colors;
         let tags = [];
-        colors.forEach((v, i) => {
+        colors.forEach((v) => {
+            let current = v.id == this.props.color.id;
             tags.push(
                 <div
                     className="tag"
                     key={v.id}
+                    onClick={this.props.handleSetColor}
+                    data-id={v.id}
+                    data-color={v.color}
+                    data-background-color={v.backgroundColor}
+                    data-label-name={v.labelName}
                     style={{
-                        color: v.color,
-                        backgroundColor: v.backgroundColor,
+                        color: current ? v.color : v.backgroundColor,
+                        backgroundColor: current ? v.backgroundColor : v.color,
+                        border: "1px solid " + (current ? v.color : v.backgroundColor)
                     }}
                 >
                     {v.labelName}
@@ -167,7 +193,8 @@ class DateSelect extends React.Component {
         return (
             <div className="date-select">
                 <input type="text"
-                    onFocus={this.props.handleDisplay}
+                    // onFocus={this.props.handleDisplay}
+                    onClick={this.props.handleDisplay}
                     value={this.props.toYear + "/" + (this.props.toMonth + 1) + "/" + this.props.today}
                     readOnly />
                 <div className="date-calendar">
@@ -186,7 +213,6 @@ class DateSelect extends React.Component {
 
 
 // 时间选择: 接收传入的时间(时:分), 接收参数修改的方法 handleTime(hour, minute), 只需要这两个即可,
-
 class TimeSelect extends React.Component {
     constructor(props) {
         super(props)

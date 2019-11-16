@@ -230,8 +230,8 @@ class YearSwitch extends React.Component {
     handleSetMonth(e) {
         let month = e.target.dataset.value
         // console.log(this.state.year, month)
-        this.props.handleSwitChDate(this.state.year, month-0)
-        this.setState({status: 0})
+        this.props.handleSwitChDate(this.state.year, month - 0)
+        this.setState({ status: 0 })
     }
 
     handleStatus() {
@@ -248,7 +248,9 @@ class YearSwitch extends React.Component {
         let list = [];
         // let ?? 不知道命名什么了
         let block;
+        let select = this.props.year + "年 " + this.props.monthArr[this.props.month] + "月";
         if (this.state.status == 1) {
+            select = this.state.year+"年"
             let monthArr = this.props.monthArr || this.state.monthArr;
             monthArr.forEach((v, i) => {
                 let style = this.props.toYear == this.props.year && this.props.toMonth == i ? "option current" : "option"
@@ -261,6 +263,7 @@ class YearSwitch extends React.Component {
                 {list}
             </div>)
         } else if (this.state.status == 2) {
+            select = this.state.yearArr[0] + " - " + this.state.yearArr[this.state.yearArr.length - 1]
             this.state.yearArr.forEach((v, i) => {
                 list.push(
                     <div onClick={this.handleSetYear} className={v == this.props.toYear ? "option current" : "option"} data-value={v} key={i}>{v}</div>
@@ -276,7 +279,7 @@ class YearSwitch extends React.Component {
             <div className="year">
                 <a onClick={this.props.headleLastMonthSwitch}><i className="icon-left"></i></a><div className="select" id="calendar-select">
                     {/* 设置什么 点击改变 status 的状态 */}
-                    <div onClick={this.handleStatus}>{this.props.year}年 {this.props.monthArr[this.props.month]}月</div>
+                    <div onClick={this.handleStatus}>{select}</div>
                     {block}
                     {/* {this.state.status == 0 ? "" : <div className="list">
                         <div className="array"></div>

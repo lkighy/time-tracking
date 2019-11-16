@@ -11,9 +11,18 @@ module.exports = {
                 loader: "babel-loader"
             }]
         }, {
+            test: /\.css$/,
+            use: ["style-loader", "css-loader"]
+        }, {
             test: /\.scss$/,
             use: ["style-loader", "css-loader", "sass-loader"]
-        }]
+        }, {
+            test: /\.(woff(2)?|ttf|eot|svg)(\?[a-z0-9]+)?$/,
+            use: [{
+                loader: 'file-loader'
+            }]
+        }
+        ]
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -26,6 +35,8 @@ module.exports = {
         alias: {
             context: path.resolve(__dirname, "src/context"),
             scss: path.resolve(__dirname, "src/scss"),
+            css: path.resolve(__dirname, "src/css"),
+            fonts: path.resolve(__dirname, "src/fonts"),
         }
     }
 }

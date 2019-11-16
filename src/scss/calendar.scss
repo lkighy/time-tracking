@@ -31,28 +31,45 @@ $noThisMonth: #d8e3f1; // 非本月颜色
     .select {
       color: #273142;
       flex: 1;
+      position: relative;
       cursor: pointer;
       .list {
         color: $calendarColor;
-        display: none;
+        display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
         position: absolute;
+        transform: translate(-15%, 0);
         width: 240px;
         height: 120px;
         background-color: #fff;
-        box-shadow: 0 3px 6px #ddd;
+        // box-shadow: 0 3px 6px #ddd;
         border-radius: 8px;
+        border: 2px solid #edf2f7;
         left: ($calendarWidth - 232px) / 2;
-        div {
+        top: 36px;
+        .current {
+          background-color: #eff6ff;
+          border-radius: 16px;
+        }
+        .option {
           line-height: 40px;
-          width: 50px;
+          width: 25%;
           height: 40px;
           cursor: pointer;
         }
-        div:hover {
+        .option:hover {
           background-color: #eff6ff;
           border-radius: 16px;
+        }
+        .array {
+          width: 0;
+          height: 0;
+          position: absolute;
+          left: 50%;
+          transform: translate(-50%, -100%);
+          border: 8px solid rgba($color: #000000, $alpha: 0.0);
+          border-bottom: 8px solid #edf2f7;
         }
       }
     }

@@ -120,7 +120,8 @@ class Box extends React.Component {
                     onClick={this.handleFlod}
                 >
                     <span className="tagName left">{this.props.tagName}</span>
-                    <span className="right">{this.state.isFlod ? ">" : "<"}</span>
+                    {/* <span className="right">{this.state.isFlod ? ">" : "<"}</span> */}
+                    <span className="right">{this.state.isFlod ? <i className="icon-down"></i> : <i className="icon-up"></i> }</span>
                 </div>
                 {this.state.isFlod ?
                     (<div className="body">

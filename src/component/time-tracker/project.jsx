@@ -28,17 +28,47 @@ class Project extends React.Component {
         super(props);
 
         // 状态码 3个 0: 时间未到 1: 时间之中 2: 过了
+        // 0: #e69500 // 黄色
+        // 1: #346bd2 // 蓝色
+        // 2: #5ec334 // 绿色
         this.state = {
             status: 0
+        }
+        this.handleStatus = this.handleStatus.bind(this)
+    }
+
+    componentDidMount() {
+        this.handleStatus()
+    }
+
+    handleStatus() {
+        // 获取当前的时间的时间戳
+        let date = new Date().getTime(); 
+        // 获取传入的时间,检查是否
+        let startDate = new Date(this.props.date+" " +this.props.startTime).getTime();
+        let endDate = new Date(this.props.date + " " + this.props.endTime).getTime();
+        if (startDate > date) { // 如果还没到这个时间, 则表示状态 0
+            this.setState({status: 0})
+        } else if (endDate < date) { // 结束
+            this.setState({status: 2})
+        } else {
+            this.setState({status: 1})
         }
     }
 
     // 需要判断状态码?
 
     render() {
-        return (<div className="project">
-            <span className="icon">图标</span>
-            <span className="label-name">{this.props.labelName}</span>
+        let style;
+        if (this.state.status == 0) {
+            style = "project icon-wait project-wait"
+        } else if (this.state.status == 1) {
+            style="project icon-goon project-goon"
+        } else {
+            style="project icon-done project-done"
+        }
+        return (<div className={style}>
+            <span className="label-name">{this.props.color.labelName}</span>
             <span className="content">{this.props.content}</span>
         </div>)
     }

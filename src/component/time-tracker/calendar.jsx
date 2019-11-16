@@ -1,5 +1,7 @@
 import React from "react";
 
+import "css/fonts.css";
+
 export default class Calendar extends React.Component {
     constructor(props) {
         super(props);
@@ -7,6 +9,7 @@ export default class Calendar extends React.Component {
         this.handleDays = this.handleDays.bind(this);
         this.headleLastMonthSwitch = this.headleLastMonthSwitch.bind(this);
         this.headleNextMonthSwitch = this.headleNextMonthSwitch.bind(this);
+        this.handleSwitchDate = this.handleSwitchDate.bind(this);
         // this.handleSetDate = this.handleSetDate.bind(this);
 
         this.state = {
@@ -71,22 +74,36 @@ export default class Calendar extends React.Component {
         })
     }
 
-    headleLastMonthSwitch() { // 换到上个月
-        let month = this.state.month > 0 ? this.state.month - 1 : 11;
-        let year = this.state.month > 0 ? this.state.year : this.state.year - 1;
+    handleSwitchDate(year, month) {
         this.setState(() => ({
+            year,
             month,
-            year
+        }))
+        this.handleDays(year, month);
+    }
+
+    headleLastMonthSwitch() { // 换到上个月
+        // let month = this.state.month > 0 ? this.state.month - 1 : 11;
+        // let year = this.state.month > 0 ? this.state.year : this.state.year - 1;
+        let date = new Date(this.state.year, this.state.month - 1)
+        let year = date.getFullYear();
+        let month = date.getMonth();
+        this.setState(() => ({
+            month: month,
+            year: year
         }))
         this.handleDays(year, month);
     }
 
     headleNextMonthSwitch() { // 换到下个月
-        let month = this.state.month < 11 ? this.state.month + 1 : 0;
-        let year = this.state.month < 11 ? this.state.year : this.state.year + 1;
+        let date = new Date(this.state.year, this.state.month + 1)
+        let year = date.getFullYear();
+        let month = date.getMonth();
+        // let month = this.state.month < 11 ? this.state.month + 1 : 0;
+        // let year = this.state.month < 11 ? this.state.year : this.state.year + 1;
         this.setState(() => ({
-            month,
-            year
+            month: month,
+            year: year
         }))
         this.handleDays(year, month);
     }
@@ -109,11 +126,15 @@ export default class Calendar extends React.Component {
         return (
             <div className="calendar">
                 <YearSwitch
+                    toYear={toYear}
+                    toMonth={toMonth}
+                    today={today}
                     monthArr={this.state.monthArr}
                     year={this.state.year}
                     month={this.state.month}
                     headleLastMonthSwitch={this.headleLastMonthSwitch}
                     headleNextMonthSwitch={this.headleNextMonthSwitch}
+                    handleSwitChDate={this.handleSwitchDate}
                 />
                 <div className="week">
                     <div>日</div>
@@ -143,15 +164,125 @@ export default class Calendar extends React.Component {
 class YearSwitch extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            status: 0,
+            monthArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            yearArr: [],
+            year: 0,
+        }
+
+        this.handleStatus = this.handleStatus.bind(this)
+        this.handleYearList = this.handleYearList.bind(this)
+        this.handleYearWheel = this.handleYearWheel.bind(this)
+        this.handleSetYear = this.handleSetYear.bind(this)
+        this.handleSetMonth = this.handleSetMonth.bind(this)
+    }
+    componentDidMount() {
+        let year = new Date().getFullYear();
+        let yearArr = [];
+        let firstYear = year - 5;
+        let lastYear = year - 0 + 6;
+        for (let i = firstYear; i <= lastYear; i++) {
+            yearArr.push(i)
+        }
+        this.setState({ yearArr, year: new Date().getFullYear() })
+    }
+
+    handleYearWheel(e) {
+        // e.deltaY
+        let yearArr = this.state.yearArr;
+        let deltaY = e.deltaY / 100
+        if (deltaY > 0) { // 往下滑动 删除前面. 在后面添加
+            // 现在的问题是怎么添加添加一个删除一个吧
+            for (let i = 0; i < 4; i++) {
+                yearArr.shift() // 删除前面的元素
+                yearArr.push(yearArr[yearArr.length - 1] + 1)// 在尾部追加元素
+            }
+            this.setState(() => ({ yearArr }))
+        } else if (deltaY < 0) { // 网上滑动, 删除后面. 添加前面
+            for (let i = 0; i < 4; i++) {
+                yearArr.pop() // 删除后面的元素
+                yearArr.unshift(yearArr[0] - 1) // 在前面追加数组
+            }
+            this.setState(() => ({ yearArr }))
+        }
+    }
+
+    handleYearList() {
+        let yearArr = [];
+        let firstYear = this.props.toYear - 5;
+        let lastYear = this.props.toYear - 0 + 6;
+        for (let i = firstYear; i <= lastYear; i++) {
+            yearArr.push(i)
+        }
+        this.setState({ yearArr })
+
+    }
+
+    handleSetYear(e) {
+        // 需要临时变量存储内容,
+        // this.props.handleSetDate(year, month, day)
+        let year = e.target.dataset.value
+        this.setState({ year: year, status: 1 })
+    }
+
+    handleSetMonth(e) {
+        let month = e.target.dataset.value
+        // console.log(this.state.year, month)
+        this.props.handleSwitChDate(this.state.year, month-0)
+        this.setState({status: 0})
+    }
+
+    handleStatus() {
+        // console.log("status: ", this.state.status)
+        let status = this.state.status;
+        if (status <= 1) {
+            status += 1
+            this.setState(() => ({ status: status }))
+        }
     }
 
     render() {
+        // 状态码: 0 默认, 1 月份, 2 年份
+        let list = [];
+        // let ?? 不知道命名什么了
+        let block;
+        if (this.state.status == 1) {
+            let monthArr = this.props.monthArr || this.state.monthArr;
+            monthArr.forEach((v, i) => {
+                let style = this.props.toYear == this.props.year && this.props.toMonth == i ? "option current" : "option"
+                list.push(
+                    <div onClick={this.handleSetMonth} className={style} data-value={i} key={i}>{v}月</div>
+                )
+            });
+            block = (<div className="list">
+                <div className="array"></div>
+                {list}
+            </div>)
+        } else if (this.state.status == 2) {
+            this.state.yearArr.forEach((v, i) => {
+                list.push(
+                    <div onClick={this.handleSetYear} className={v == this.props.toYear ? "option current" : "option"} data-value={v} key={i}>{v}</div>
+                )
+            })
+            block = (<div onWheel={this.handleYearWheel} className="list">
+                <div className="array"></div>
+                {list}
+            </div>)
+        }
+
         return (
             <div className="year">
-                <a onClick={this.props.headleLastMonthSwitch}>&lt;</a><div className="select" id="calendar-select">
-                    <div>{this.props.year}年 {this.props.monthArr[this.props.month]}月</div>
-                    <div className="list"></div>
-                </div><a onClick={this.props.headleNextMonthSwitch}>&gt;</a>
+                <a onClick={this.props.headleLastMonthSwitch}><i className="icon-left"></i></a><div className="select" id="calendar-select">
+                    {/* 设置什么 点击改变 status 的状态 */}
+                    <div onClick={this.handleStatus}>{this.props.year}年 {this.props.monthArr[this.props.month]}月</div>
+                    {block}
+                    {/* {this.state.status == 0 ? "" : <div className="list">
+                        <div className="array"></div>
+                        {block}
+                    </div>} */}
+                </div><a onClick={this.props.headleNextMonthSwitch}><i className="icon-right"></i></a>
             </div>
         )
     }

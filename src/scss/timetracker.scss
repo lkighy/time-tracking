@@ -7,6 +7,7 @@ $sidebarWidth: 375px;
   left: 0;
   top: 0;
   bottom: 0;
+  background-color: #f6f9ff;
 }
 
 .container {
@@ -20,13 +21,26 @@ $sidebarWidth: 375px;
 
 .box {
   width: 315px;
-  margin: 0 auto;
+  margin: 12px auto;
+  padding: 12px 8px;
+  border-radius: 8px;
+  background-color: #fff;
   .top {
+    padding: 4px 8px;
+    background-color: #f6f9ff;
+    cursor: pointer;
     height: 24px;
+    border-radius: 8px;
     line-height: 24px;
     margin-bottom: 4px;
+    i {
+      color: #559aef;
+    }
     .tagName {
-      font-size: 16px;
+      color: #559aef;
+      font-family: "微软雅黑";
+      font-weight: 700;
+      font-size: 18px;
       font-weight: 500;
     }
   }

@@ -7,8 +7,8 @@ const state = {
         left: 0
     },
     size: {
-        width: 1440,
-        height: 1680,
+        width: 1680,
+        height: 1440,
         offsetX: 88,
         offsetY: 48,
     },

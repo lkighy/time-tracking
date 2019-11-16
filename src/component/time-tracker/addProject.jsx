@@ -74,7 +74,7 @@ export default class AddProject extends React.Component {
                 <div className={this.state.flac ? "add_button flac" : "add_button"}
                     onClick={this.handleFlac}
                 >
-                    +
+                    <i className="icon-add"></i>
                 </div>
                 {this.state.flac ? <div className="add_form">
                     <div className="tagname">日期:</div>

@@ -36,10 +36,6 @@ export default class Timetracker extends React.Component {
             )
     }
 
-    // handleSetDateRange() {
-    //     // 设置什么呢?
-    // }
-
     handleSetDate(year, month, day) {
         // 那么的话需要什么呢?
         // 获取这周的日期,那么的话
@@ -95,6 +91,7 @@ export default class Timetracker extends React.Component {
         )
     }
 }
+
 
 
 class Box extends React.Component {

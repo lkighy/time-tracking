@@ -179,9 +179,7 @@ export default class Timesheet extends React.Component {
             <div
                 ref={this.sheetRef}
                 className="timesheet">
-                <div
-                    className=""
-                ></div>
+                <div ></div>
                 <div
                     className="ruler"
                     ref={this.rulerRef}
@@ -228,20 +226,73 @@ export default class Timesheet extends React.Component {
                     day={this.props.day}
                     dateRange={this.props.dateRange}
                 />
+                <Timeline
+                    width={width}
+                    height={height}
+                    offsetX={offsetX / 2}
+                    top={top + offsetY}
+                />
             </div>
         )
     }
 }
 
+// 时间线
+class Timeline extends React.Component {
+    constructor(props) {
+        super(props);
 
-// class AddProject extends React.Component {
-//     constructor(props) {
-//         super(props);
-//     }
+        // 每秒钟更新状况
+        this.state = {
+            position: 0,
+            time: ""
+        }
 
-//     render() {}
-// }
+        this.tick = this.tick.bind(this)
+        // 事实更新这个吧
+    }
 
+    componentDidMount() { // 设置循环方法
+        this.timerID = setInterval(() => this.tick(), 1000)
+    }
+
+    componentWillUnmount() { // 卸载方法
+        clearInterval(this.timerID)
+    }
+
+    tick() {
+        // 更新吧
+        // 获取当前时间
+        let date = new Date();
+        // 计算时间偏移量
+        let time = date.getHours() + ":" +date.getMinutes();
+        let scale = this.props.height / 24;
+        let position = date.getHours() * scale + date.getMinutes() * scale / 60;
+        this.setState(() => ({
+            position,
+            time
+        }))
+    }
+
+    render() {
+        // 获取当前时间, 计算时间偏移量 
+        // 获取分钟偏移量
+        // let data = new
+        //     this.props.height / 24 / 60 * 12;
+        // this.props.height / 24 // 计算每小时偏移量 
+        return <div
+            style={{
+                top: this.state.position + this.props.top - 7,
+                left: this.props.offsetX
+            }}
+            className="timeline">
+            <hr className="line"
+                width={this.props.width}
+            />
+    <div className="time">{this.state.time}</div>
+        </div>
+    }
+}
 
 class Labels extends React.Component {
     constructor(props) {
@@ -268,7 +319,7 @@ class Labels extends React.Component {
                     {...lab}
                 />)
             }
-            
+
         })
 
         let top = this.props.top;

@@ -59,16 +59,19 @@ export default class Timetracker extends React.Component {
                 <div className="sidebar">
                     <Box tagName="日历">
                         <Calendar
+                            isStay={true}
+
                             toYear={this.state.toYear}
                             toMonth={this.state.toMonth}
                             today={this.state.today}
+
                             handleSetDate={this.handleSetDate}
-                            isStay={true}
                         />
                     </Box>
                     <Box tagName="日程">
                         <Projects
                             labels={this.props.labels}
+
                             dateRange={this.state.dateRange}
                         />
                     </Box>
@@ -89,6 +92,7 @@ export default class Timetracker extends React.Component {
                 </div>
                 <AddProject
                     colors={this.props.colors}
+                    handleAddLabel={this.props.handleAddLabel}
                 />
             </div>
         )

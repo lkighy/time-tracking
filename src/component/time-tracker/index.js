@@ -11,6 +11,8 @@ export default class App extends React.Component {
         this.handlePosition = this.handlePosition.bind(this);
         this.handleDate = this.handleDate.bind(this);
 
+        this.handleAddLabel = this.handleAddLabel.bind(this);
+
         this.state = state;
     }
 
@@ -26,6 +28,23 @@ export default class App extends React.Component {
         })
     }
 
+    handleAddLabel(label) { // 添加 label
+        // id 怎么指定呢 // 为了最大可修改性, label 的 id 得自己定义, 还有一个格式的验证
+        let labels = this.state.labels;
+        label = {id: new Date().getTime(), ...label}
+        this.setState({
+            labels: [
+                ...labels,
+                label
+            ]
+        })
+
+        return true
+    }
+    // handleRemoveLabel(id) { // 移除指定id label
+
+    // }
+
     render() {
         return (
             <Timetracker
@@ -37,6 +56,7 @@ export default class App extends React.Component {
                 position={this.state.position}
 
                 handleDate={this.handleDate}
+                handleAddLabel={this.handleAddLabel}
                 handlePositionX={this.handlePositionX}
                 handlePositionY={this.handlePositionY}
                 handlePosition={this.handlePosition}

@@ -16,17 +16,21 @@ export default class Projects extends React.Component {
                     <Project key={lab.id} {...lab} />
                 )
             }
-            if( projects.length == 0) {
-                projects.push(
-                    <div key="0" className="empty">
-                        这周还没有任务喔,快去新建一个吧...
-                    </div>
-                )
-            }
+            // console.log(projects)
+            // if( projects.length == 0) {
+            //     projects.push(
+            //         <div key="0" className="empty">
+            //             这周还没有任务喔,快去新建一个吧...
+            //         </div>
+            //     )
+            // }
         })
         // 判空, 如果为空, 则表示这周没有任务 ...
         return (
             <div className="projects">
+                {projects.length == 0 ?<div className="empty">
+                    这周还没有任务喔, 快去新建一个吧
+                </div> : ""}
                 {projects}
             </div>
         )

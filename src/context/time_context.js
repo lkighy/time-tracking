@@ -23,17 +23,17 @@ let state = {
     colors: [{
         id: 1,
         labelName: "出行",
-        color: "#ffffff",
+        fontColor: "#ffffff",
         backgroundColor: "#fec25a"
     },{
         id: 2,
         labelName: "旅游",
-        color: "#ffffff",
+        fontColor: "#ffffff",
         backgroundColor: "#1e5b5e"
     },{
         id: 3,
         labelName: "购物",
-        color: "#ffffff",
+        fontColor: "#ffffff",
         backgroundColor: "skyblue"
     }],
     labels: [{

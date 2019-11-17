@@ -15,6 +15,7 @@ export default class AddProject extends React.Component {
             endHour: 0,
             endMinute: 0,
             color: {},
+            value: "",
             calendarDisplay: false
         }
         this.handleSetDate = this.handleSetDate.bind(this)
@@ -23,6 +24,8 @@ export default class AddProject extends React.Component {
         this.handleCalendarDisplay = this.handleCalendarDisplay.bind(this)
         this.handleFlac = this.handleFlac.bind(this)
         this.handleSetColor = this.handleSetColor.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleAddLabel = this.handleAddLabel.bind(this)
     }
 
     handleFlac() {
@@ -83,6 +86,24 @@ export default class AddProject extends React.Component {
         }))
     }
 
+    handleAddLabel(e) {
+        e.preventDefault()
+        this.props.handleAddLabel({
+            date: this.state.toYear + "/" + (this.state.toMonth + 1) + "/" + this.state.today,
+            startTime: this.state.startHour + ":" + this.state.startMinute,
+            endTime: this.state.endHour + ":" + this.state.endMinute,
+            content: this.state.value,
+            color: this.state.color,
+        })
+        this.setState({flac: false})
+    }
+
+    handleChange(e) {
+        this.setState({
+            value: e.target.value
+        })
+    }
+
     render() {
         return (
             <div className="add_project">
@@ -126,14 +147,13 @@ export default class AddProject extends React.Component {
                             handleSetColor={this.handleSetColor}
                         />
                     </div>
-                    {/* 选择东西 */}
-                    {/* <input type="text" className="content"/> */}
-                    {/* 选择颜色出行 */}
                     <div className="tagname">备注:</div>
                     <textarea className="content" name="content" id="" cols="30" rows="10"
+                        value={this.state.value}
+                        onChange={this.handleChange}
                         placeholder="你想要做什么?"
                     ></textarea>
-                    <button className="submit">确定</button>
+                    <button className="submit" onClick={this.handleAddLabel}>确定</button>
                     {/*选择日期/选择开始时间/选择结束时间/选择标签名称/写入内容/好了*/}
                 </div> : ""}
             </div>
@@ -162,13 +182,13 @@ class ClassSelect extends React.Component {
                     key={v.id}
                     onClick={this.props.handleSetColor}
                     data-id={v.id}
-                    data-color={v.color}
+                    data-color={v.fontColor}
                     data-background-color={v.backgroundColor}
                     data-label-name={v.labelName}
                     style={{
-                        color: current ? v.color : v.backgroundColor,
-                        backgroundColor: current ? v.backgroundColor : v.color,
-                        border: "1px solid " + (current ? v.color : v.backgroundColor)
+                        color: current ? v.fontColor : v.backgroundColor,
+                        backgroundColor: current ? v.backgroundColor : v.fontColor,
+                        border: "1px solid " + (current ? v.fontColor : v.backgroundColor)
                     }}
                 >
                     {v.labelName}
@@ -193,7 +213,6 @@ class DateSelect extends React.Component {
         return (
             <div className="date-select">
                 <input type="text"
-                    // onFocus={this.props.handleDisplay}
                     onClick={this.props.handleDisplay}
                     value={this.props.toYear + "/" + (this.props.toMonth + 1) + "/" + this.props.today}
                     readOnly />
@@ -221,7 +240,6 @@ class TimeSelect extends React.Component {
         this.handleHourWheel = this.handleHourWheel.bind(this)
         this.handleMinuteWheel = this.handleMinuteWheel.bind(this)
     }
-
 
     // 格式化 小时 和 分钟,保持两位数保证好看
     formatTime(time) {

@@ -211,6 +211,7 @@ export default class Timesheet extends React.Component {
                     }}
                     width={width}
                     height={height}
+
                     onMouseDown={this.handleMouseDown}
                     onMouseUp={this.handleRemoveMouse}
                     onMouseLeave={this.handleRemoveMouse}
@@ -221,6 +222,7 @@ export default class Timesheet extends React.Component {
                     height={height}
                     top={top + offsetY}
                     left={left + offsetX}
+
                     year={this.props.year}
                     month={this.props.month}
                     day={this.props.day}
@@ -231,6 +233,7 @@ export default class Timesheet extends React.Component {
                     width={width / 7}
                     height={height}
                     left={left}
+
                     day={this.props.day}
                     month={this.props.month}
                     year={this.props.year}

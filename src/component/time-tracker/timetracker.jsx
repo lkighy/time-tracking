@@ -92,7 +92,7 @@ export default class Timetracker extends React.Component {
                 </div>
                 <AddProject
                     colors={this.props.colors}
-                    handleAddLabel={this.props.handleAddle}
+                    handleAddLabel={this.props.handleAddLabel}
                 />
             </div>
         )

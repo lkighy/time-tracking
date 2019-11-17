@@ -1,5 +1,11 @@
 # 时间管理应用
 
+## 预览
+
+<img src="./preview/1.png" width="49%"/>
+<img src="./preview/2.png" width="49%"/>
+<img src="./preview/3.png" width="49%"/>
+
 ## component 
 组件
 

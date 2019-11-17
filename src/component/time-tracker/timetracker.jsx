@@ -33,7 +33,7 @@ export default class Timetracker extends React.Component {
             this.props.year || date.getFullYear(),
             this.props.month || date.getMonth(),
             this.props.today || date.getDate(),
-            )
+        )
     }
 
     handleSetDate(year, month, day) {
@@ -47,7 +47,7 @@ export default class Timetracker extends React.Component {
         let dateRange = [];
         for (let i = sun; i < sat; i++) {
             let todate = new Date(year, month, i);
-            dateRange.push(todate.getFullYear() + "/" + (todate.getMonth() - 0 + 1)+ "/" + todate.getDate());
+            dateRange.push(todate.getFullYear() + "/" + (todate.getMonth() - 0 + 1) + "/" + todate.getDate());
         }
         this.setState(() => ({
             toYear: year - 0,
@@ -73,11 +73,12 @@ export default class Timetracker extends React.Component {
                     <Box tagName="日程">
                         <Projects
                             labels={this.context.labels}
+                            dateRange={this.state.dateRange}
                         />
                     </Box>
                 </div>
                 <div className="container">
-                    <Timesheet 
+                    <Timesheet
                         year={this.state.toYear}
                         month={this.state.toMonth}
                         day={this.state.today}
@@ -118,7 +119,7 @@ class Box extends React.Component {
                 >
                     <span className="tagName left">{this.props.tagName}</span>
                     {/* <span className="right">{this.state.isFlod ? ">" : "<"}</span> */}
-                    <span className="right">{this.state.isFlod ? <i className="icon-down"></i> : <i className="icon-up"></i> }</span>
+                    <span className="right">{this.state.isFlod ? <i className="icon-down"></i> : <i className="icon-up"></i>}</span>
                 </div>
                 {this.state.isFlod ?
                     (<div className="body">

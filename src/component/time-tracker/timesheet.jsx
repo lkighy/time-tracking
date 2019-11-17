@@ -226,6 +226,15 @@ export default class Timesheet extends React.Component {
                     day={this.props.day}
                     dateRange={this.props.dateRange}
                 />
+                <RectangleBG
+                    offsetX={offsetX}
+                    width={width / 7}
+                    height={height}
+                    left={left}
+                    day={this.props.day}
+                    month={this.props.month}
+                    year={this.props.year}
+                />
                 <Timeline
                     width={width}
                     height={height}
@@ -234,6 +243,24 @@ export default class Timesheet extends React.Component {
                 />
             </div>
         )
+    }
+}
+
+class RectangleBG extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        let offsetX = new Date(this.props.year, this.props.month, this.props.day).getDay() * this.props.width;
+        return (<div className="rectangle-gb"
+            style={{
+                left: offsetX + this.props.left + this.props.offsetX + "px",
+                width: this.props.width,
+                height: this.props.height
+            }}
+        >
+
+        </div>)
     }
 }
 
@@ -265,21 +292,20 @@ class Timeline extends React.Component {
         // 获取当前时间
         let date = new Date();
         // 计算时间偏移量
-        let time = date.getHours() + ":" +date.getMinutes();
+        // let time = date.getHours() + ":" + date.getMinutes();
+        let hour = date.getHours();
+        hour = hour < 10 ? "0"+hour : hour;
+        let minute = date.getMinutes();
+        minute = minute < 10 ? "0"+minute : minute;
         let scale = this.props.height / 24;
         let position = date.getHours() * scale + date.getMinutes() * scale / 60;
         this.setState(() => ({
             position,
-            time
+            time: hour+":"+minute
         }))
     }
 
     render() {
-        // 获取当前时间, 计算时间偏移量 
-        // 获取分钟偏移量
-        // let data = new
-        //     this.props.height / 24 / 60 * 12;
-        // this.props.height / 24 // 计算每小时偏移量 
         return <div
             style={{
                 top: this.state.position + this.props.top - 7,
@@ -289,7 +315,7 @@ class Timeline extends React.Component {
             <hr className="line"
                 width={this.props.width}
             />
-    <div className="time">{this.state.time}</div>
+            <div className="time">{this.state.time}</div>
         </div>
     }
 }
@@ -301,13 +327,6 @@ class Labels extends React.Component {
 
     render() {
         let labels = [];
-        let year = this.props.year;
-        let month = this.props.month;
-        let day = this.props.day;
-        let date = new Date(year, month, day);
-        // 最小日期
-        let week = date.getDay() // 得到 0 - 6 中一的一个数字, 13 - 2 - 1 = 11 13 + 7 - 2 - 1 = 16
-        // 最大日期
         this.props.labels.forEach((lab) => {
             // 获取获取日期,判断是否在该选中的时间内, 如果不在,则不添加
             // 判断日期

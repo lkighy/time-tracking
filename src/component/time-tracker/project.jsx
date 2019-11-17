@@ -10,10 +10,21 @@ export default class Projects extends React.Component {
     render() {
         let projects = [];
         this.props.labels.forEach((lab) => {
-            projects.push(
-                <Project key={lab.id} {...lab} />
-            )
+            // if (this.props.dateRange.join(",").indexOf(lab.date) >= 0) {
+            if (this.props.dateRange.join(",").indexOf(lab.date) >= 0) {
+                projects.push(
+                    <Project key={lab.id} {...lab} />
+                )
+            }
+            if( projects.length == 0) {
+                projects.push(
+                    <div key="0" className="empty">
+                        这周还没有任务喔,快去新建一个吧...
+                    </div>
+                )
+            }
         })
+        // 判空, 如果为空, 则表示这周没有任务 ...
         return (
             <div className="projects">
                 {projects}
@@ -43,16 +54,16 @@ class Project extends React.Component {
 
     handleStatus() {
         // 获取当前的时间的时间戳
-        let date = new Date().getTime(); 
+        let date = new Date().getTime();
         // 获取传入的时间,检查是否
-        let startDate = new Date(this.props.date+" " +this.props.startTime).getTime();
+        let startDate = new Date(this.props.date + " " + this.props.startTime).getTime();
         let endDate = new Date(this.props.date + " " + this.props.endTime).getTime();
         if (startDate > date) { // 如果还没到这个时间, 则表示状态 0
-            this.setState({status: 0})
+            this.setState({ status: 0 })
         } else if (endDate < date) { // 结束
-            this.setState({status: 2})
+            this.setState({ status: 2 })
         } else {
-            this.setState({status: 1})
+            this.setState({ status: 1 })
         }
     }
 
@@ -63,9 +74,9 @@ class Project extends React.Component {
         if (this.state.status == 0) {
             style = "project icon-wait project-wait"
         } else if (this.state.status == 1) {
-            style="project icon-goon project-goon"
+            style = "project icon-goon project-goon"
         } else {
-            style="project icon-done project-done"
+            style = "project icon-done project-done"
         }
         return (<div className={style}>
             <span className="label-name">{this.props.color.labelName}</span>

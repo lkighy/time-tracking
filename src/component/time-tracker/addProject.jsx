@@ -161,6 +161,36 @@ export default class AddProject extends React.Component {
     }
 }
 
+class AddClass extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            labelName: "",
+            backgroundColor: "",
+            fontColor: "",
+        }
+    }
+
+    render() {
+        // id 随意, 可以肯定的是不是在这里指定的
+        // labelName 标签名称
+        // backgroundColor 背景颜色 需要颜色选择组件
+        // fontColor 字体颜色 需要颜色选择组件
+        // 预览图
+        return (
+            <div>
+                <div className="labname">标签名称:</div>
+                <input type="text" className="label-name"/>
+                <div className="labname">字体颜色:</div>
+                <div>颜色选择块啊喂</div> 
+                <div className="labname">背景颜色:</div>
+                <div>颜色选择块</div>
+                <div className="labname">预览:</div>
+            </div>
+        )
+    }
+}
 
 class ClassSelect extends React.Component {
     constructor(props) {
@@ -168,10 +198,6 @@ class ClassSelect extends React.Component {
     }
 
     render() {
-        // 接收得 props 参数 有 colors:
-        // 现在你要怎么做呢
-
-        // 如何算是选中呢
         let colors = this.props.colors;
         let tags = [];
         colors.forEach((v) => {
@@ -198,6 +224,8 @@ class ClassSelect extends React.Component {
         return (
             <div className="class-select">
                 {tags}
+                {/* 这里有个点击按钮需要添加 */}
+                <div className="add-button"><i className="icon-add"></i></div>
             </div>
         )
     }

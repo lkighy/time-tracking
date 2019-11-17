@@ -278,7 +278,7 @@ class Timeline extends React.Component {
         // 每秒钟更新状况
         this.state = {
             position: 0,
-            time: ""
+            // time: ""
         }
 
         this.tick = this.tick.bind(this)
@@ -299,15 +299,15 @@ class Timeline extends React.Component {
         let date = new Date();
         // 计算时间偏移量
         // let time = date.getHours() + ":" + date.getMinutes();
-        let hour = date.getHours();
-        hour = hour < 10 ? "0" + hour : hour;
-        let minute = date.getMinutes();
-        minute = minute < 10 ? "0" + minute : minute;
+        // let hour = date.getHours();
+        // hour = hour < 10 ? "0" + hour : hour;
+        // let minute = date.getMinutes();
+        // minute = minute < 10 ? "0" + minute : minute;
         let scale = this.props.height / 24;
         let position = date.getHours() * scale + date.getMinutes() * scale / 60;
         this.setState(() => ({
             position,
-            time: hour + ":" + minute
+            // time: hour + ":" + minute
         }))
     }
 

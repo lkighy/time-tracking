@@ -241,8 +241,11 @@ export default class Timesheet extends React.Component {
                 <Timeline
                     width={width}
                     height={height}
-                    offsetX={offsetX / 2}
+                    left={left}
+                    offsetX={offsetX}
                     top={top + offsetY}
+
+                    dateRange={this.props.dateRange}
                 />
             </div>
         )
@@ -297,29 +300,38 @@ class Timeline extends React.Component {
         // 计算时间偏移量
         // let time = date.getHours() + ":" + date.getMinutes();
         let hour = date.getHours();
-        hour = hour < 10 ? "0"+hour : hour;
+        hour = hour < 10 ? "0" + hour : hour;
         let minute = date.getMinutes();
-        minute = minute < 10 ? "0"+minute : minute;
+        minute = minute < 10 ? "0" + minute : minute;
         let scale = this.props.height / 24;
         let position = date.getHours() * scale + date.getMinutes() * scale / 60;
         this.setState(() => ({
             position,
-            time: hour+":"+minute
+            time: hour + ":" + minute
         }))
     }
 
     render() {
-        return <div
-            style={{
-                top: this.state.position + this.props.top - 7,
-                left: this.props.offsetX
-            }}
-            className="timeline">
-            <hr className="line"
-                width={this.props.width}
-            />
-            <div className="time">{this.state.time}</div>
-        </div>
+        let date = new Date();
+        let todate = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
+        if (this.props.dateRange.join(".").indexOf(todate) >= 0) {
+            return <div
+                style={{
+                    top: this.state.position + this.props.top - 7,
+                    left: this.props.offsetX + (date.getDay() * this.props.width / 7) + this.props.left - 2
+                }}
+                className="timeline">
+                <hr className="line"
+                    width={this.props.width / 7}
+                />
+                {/* <div className="time">{this.state.time}</div> */}
+                <div className="dot"></div>
+            </div>
+
+        } else {
+            return ""
+        }
+
     }
 }
 

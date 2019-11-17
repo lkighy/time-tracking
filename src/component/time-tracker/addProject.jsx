@@ -67,7 +67,7 @@ export default class AddProject extends React.Component {
             color: {
                 id: e.target.dataset.id,
                 labelName: e.target.dataset.labelName,
-                color: e.target.dataset.color,
+                fontColor: e.target.dataset.color,
                 backgroundColor: e.target.dataset.backgroundColor
             }
         })

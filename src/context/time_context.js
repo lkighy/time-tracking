@@ -32,37 +32,7 @@ let state = {
         backgroundColor: "#1e5b5e"
     },{
         id: 3,
-        labelName: "哈哈",
-        color: "#ffffff",
-        backgroundColor: "skyblue"
-    },{
-        id: 4,
-        labelName: "哈哈",
-        color: "#ffffff",
-        backgroundColor: "skyblue"
-    },{
-        id: 5,
-        labelName: "哈哈",
-        color: "#ffffff",
-        backgroundColor: "skyblue"
-    },{
-        id: 6,
-        labelName: "哈哈",
-        color: "#ffffff",
-        backgroundColor: "skyblue"
-    },{
-        id: 7,
-        labelName: "哈哈",
-        color: "#ffffff",
-        backgroundColor: "skyblue"
-    },{
-        id: 8,
-        labelName: "哈哈",
-        color: "#ffffff",
-        backgroundColor: "skyblue"
-    },{
-        id: 9,
-        labelName: "哈哈",
+        labelName: "购物",
         color: "#ffffff",
         backgroundColor: "skyblue"
     }],

@@ -3,12 +3,12 @@ import Calendar from "./calendar.jsx";
 import Timesheet from "./timesheet.jsx";
 import Projects from "./project.jsx";
 import AddProject from "./addProject.jsx";
-import { StateContext } from "context/time_context";
+// import { state, StateContext } from "context/time_context";
 
 // import "scss/Timetracker.scss";
 
 export default class Timetracker extends React.Component {
-    static contextType = StateContext;
+    // static contextType = StateContext;
     constructor(props) {
         super(props);
 
@@ -24,11 +24,7 @@ export default class Timetracker extends React.Component {
 
     componentDidMount() {
         let date = new Date();
-        // this.setState({
-        //     toYear: this.props.year || date.getFullYear(),
-        //     toMonth: this.props.month || date.getMonth(),
-        //     today: this.props.today || date.getDate(),
-        // })
+    
         this.handleSetDate(
             this.props.year || date.getFullYear(),
             this.props.month || date.getMonth(),
@@ -72,13 +68,19 @@ export default class Timetracker extends React.Component {
                     </Box>
                     <Box tagName="日程">
                         <Projects
-                            labels={this.context.labels}
+                            labels={this.props.labels}
                             dateRange={this.state.dateRange}
                         />
                     </Box>
                 </div>
                 <div className="container">
                     <Timesheet
+                        size={this.props.size}
+                        labels={this.props.labels}
+                        weekArr={this.props.weekArr}
+                        position={this.props.position}
+                        handlePosition={this.props.handlePosition}
+
                         year={this.state.toYear}
                         month={this.state.toMonth}
                         day={this.state.today}
@@ -86,7 +88,7 @@ export default class Timetracker extends React.Component {
                     />
                 </div>
                 <AddProject
-                    colors={this.context.colors}
+                    colors={this.props.colors}
                 />
             </div>
         )
@@ -118,7 +120,6 @@ class Box extends React.Component {
                     onClick={this.handleFlod}
                 >
                     <span className="tagName left">{this.props.tagName}</span>
-                    {/* <span className="right">{this.state.isFlod ? ">" : "<"}</span> */}
                     <span className="right">{this.state.isFlod ? <i className="icon-down"></i> : <i className="icon-up"></i>}</span>
                 </div>
                 {this.state.isFlod ?
@@ -130,17 +131,3 @@ class Box extends React.Component {
         )
     }
 }
-
-// function Box(props) {
-//     return (
-//         <div className="box">
-//             <div className="name">
-//                 <span>{this.props.name}</span>
-//                 <span>></span>
-//             </div>
-//             <div className="content">
-//                 {props.children}
-//             </div>
-//         </div>
-//     )
-// }

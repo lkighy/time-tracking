@@ -1,9 +1,9 @@
 import React from "react";
 
-import { StateContext } from "context/time_context";
+// import { StateContext } from "context/time_context";
 
 export default class Timesheet extends React.Component {
-    static contextType = StateContext;
+    // static contextType = StateContext;
     constructor(props) {
         super(props);
 
@@ -30,7 +30,7 @@ export default class Timesheet extends React.Component {
     }
 
     handleDrawTable() { // 绘制表格线条
-        let size = this.context.size;
+        let size = this.props.size;
 
         let width = size.width;
         let height = size.height;
@@ -60,7 +60,7 @@ export default class Timesheet extends React.Component {
     }
 
     handleDrawTime() { // 绘制时间表格
-        let size = this.context.size;
+        let size = this.props.size;
 
         let height = size.height;
         let topSpace = size.height / 24;
@@ -110,8 +110,8 @@ export default class Timesheet extends React.Component {
 
     // 鼠标移动时
     handleMouseMove(e) {
-        const size = this.context.size;
-        const position = this.context.position;
+        const size = this.props.size;
+        const position = this.props.position;
 
         let width = size.width;
         let height = size.height;
@@ -146,7 +146,7 @@ export default class Timesheet extends React.Component {
         // let offsetY = sheetDiv.offsetHeight - height - rulerHeight;
         // y = y > 0 ? 0 : (y < offsetY ? offsetY : y);
 
-        this.context.handlePosition(x, y);
+        this.props.handlePosition(x, y);
     }
 
     handleMouseDown(e) {
@@ -162,8 +162,8 @@ export default class Timesheet extends React.Component {
     }
 
     render() {
-        let size = this.context.size;
-        let position = this.context.position;
+        let size = this.props.size;
+        let position = this.props.position;
         let weekDivs = [];
         let width = size.width;
         let height = size.height;
@@ -171,9 +171,9 @@ export default class Timesheet extends React.Component {
         let offsetY = size.offsetY;
         let left = position.left;
         let top = position.top;
-        let labels = this.context.labels;
+        let labels = this.props.labels;
 
-        this.context.weekArr.forEach((v, i) => { weekDivs.push(<div key={i}>{v}</div>) });
+        this.props.weekArr.forEach((v, i) => { weekDivs.push(<div key={i}>{v}</div>) });
 
         return (
             <div

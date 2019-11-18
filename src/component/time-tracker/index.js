@@ -1,19 +1,20 @@
 import Timetracker from "./timetracker.jsx";
 import React from "react";
 import { state } from "context/time_context";
+import { TYPE } from "./projectManage.jsx";
 
 
 export default class App extends React.Component {
-    // static contextType = StateContext;
     constructor(props) {
         super(props);
+
+
+        this.state = state;
 
         this.handlePosition = this.handlePosition.bind(this);
         this.handleDate = this.handleDate.bind(this);
 
-        this.handleAddLabel = this.handleAddLabel.bind(this);
-
-        this.state = state;
+        this.handleSetLabel = this.handleSetLabel.bind(this);
     }
 
     handlePosition(x, y) {
@@ -28,23 +29,36 @@ export default class App extends React.Component {
         })
     }
 
-    handleAddLabel(label) { // 添加 label
-        // id 怎么指定呢 // 为了最大可修改性, label 的 id 得自己定义, 还有一个格式的验证
+    handleSetLabel(type, label) {
         let labels = this.state.labels;
-        label = { ...label, id: new Date().getTime() }
-        console.log(label)
-        this.setState({
-            labels: [
-                ...labels,
-                label
-            ]
-        })
-
-        return true
+        switch (type) {
+            case TYPE.ADD_PROJECT: // 添加操作
+                label = { ...label, id: new Date().getTime() }
+                this.setState({
+                    labels: [
+                        ...labels,
+                        label
+                    ]
+                })
+                return true
+            case TYPE.CHANGE_PROJECT: // 修改操作
+                labels.findIndex((v) => (v.id == label.id))
+                if (i < 0) {
+                    return false
+                }
+                labels[i] = label
+                this.setState(labels)
+                return true
+            case TYPE.REMOVE_PROJECT: // 删除操作
+                labels.findIndex((v) => (v.id == label.id))
+                if (i < 0) {
+                    return false
+                }
+                labels.splice(i, 1)
+                this.setState(labels)
+                return true
+        }
     }
-    // handleRemoveLabel(id) { // 移除指定id label
-
-    // }
 
     render() {
         return (
@@ -57,7 +71,7 @@ export default class App extends React.Component {
                 position={this.state.position}
 
                 handleDate={this.handleDate}
-                handleAddLabel={this.handleAddLabel}
+                handleSetLabel={this.handleSetLabel}
                 handlePositionX={this.handlePositionX}
                 handlePositionY={this.handlePositionY}
                 handlePosition={this.handlePosition}

@@ -51,14 +51,17 @@
     border: none;
     display: flex;
     > button {
+      display: block;
       margin: 0 8px;
       flex: 1;
       border-radius: 4px;
       border: none;
       outline: none;
       height: 32px;
+      line-height: 32px;
       color: #fff;
       font-size: 16px;
+      background-color: #a9a9a9;
     }
     .btn-modify {
       background-color: #eeeeee;

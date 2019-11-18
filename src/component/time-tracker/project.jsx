@@ -10,20 +10,11 @@ export default class Projects extends React.Component {
     render() {
         let projects = [];
         this.props.labels.forEach((lab) => {
-            // if (this.props.dateRange.join(",").indexOf(lab.date) >= 0) {
             if (this.props.dateRange.join(",").indexOf(lab.date) >= 0) {
                 projects.push(
                     <Project key={lab.id} {...lab} />
                 )
             }
-            // console.log(projects)
-            // if( projects.length == 0) {
-            //     projects.push(
-            //         <div key="0" className="empty">
-            //             这周还没有任务喔,快去新建一个吧...
-            //         </div>
-            //     )
-            // }
         })
         // 判空, 如果为空, 则表示这周没有任务 ...
         return (
@@ -82,7 +73,11 @@ class Project extends React.Component {
         } else {
             style = "project icon-done project-done"
         }
-        return (<div className={style}>
+
+        // 点击显示 修改列表
+        return (<div className={style}
+            onClick=""
+        >
             <span className="label-name">{this.props.color.labelName}</span>
             <span className="content">{this.props.content}</span>
         </div>)

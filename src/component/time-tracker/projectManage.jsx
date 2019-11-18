@@ -3,8 +3,16 @@ import Calendar from "./calendar.jsx";
 import "scss/projectManage.scss";
 
 const ADD_PROJECT = "ADD_PROJECT";
-const MODIFY_PROJECT = "MODIFY_PROJECT";
+const CHANGE_PROJECT = "CHANGE_PROJECT";
+const REMOVE_PROJECT = "REMOVE_PROJECT";
 
+const TYPE = {
+    ADD_PROJECT,
+    CHANGE_PROJECT,
+    REMOVE_PROJECT
+}
+
+// 添加按钮
 class AddButton extends React.Component {
     constructor(props) {
         super(props);
@@ -32,7 +40,7 @@ class AddButton extends React.Component {
                         handleSetDisplay={this.handleSetDisplay}
 
                         colors={this.props.colors}
-                        handleAddLabel={this.props.handleAddLabel}
+                        handleSetLabel={this.props.handleSetLabel}
                     /> : ""
                 }
             </div>
@@ -40,6 +48,7 @@ class AddButton extends React.Component {
     }
 }
 
+// 项目表单
 class ProjectForm extends React.Component {
     constructor(props) {
         super(props);
@@ -64,13 +73,14 @@ class ProjectForm extends React.Component {
         this.handleCalendarDisplay = this.handleCalendarDisplay.bind(this)
         this.handleSetColor = this.handleSetColor.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleAddLabel = this.handleAddLabel.bind(this)
         this.handleClose = this.handleClose.bind(this)
+
+        this.handleSetLabel = this.handleSetLabel.bind(this)
     }
 
     componentDidMount() {
         let date = new Date();
-        if (this.props.statue == MODIFY_PROJECT) { // 是否是修改
+        if (this.props.statue == CHANGE_PROJECT) { // 是否是修改
             let [year, month, day] = this.props.date.split("/")
             let [startHour, startMinute] = this.props.startTime(":")
             let [endHour, endMinute] = this.props.endTime(":")
@@ -139,9 +149,12 @@ class ProjectForm extends React.Component {
         }))
     }
 
-    handleAddLabel(e) {
-        e.preventDefault()
-        this.props.handleAddLabel({
+
+    handleSetLabel(e) {
+
+        let type = e.target.dataset.type // 获取操作的类型
+        // 增加, 删除, 修改
+        this.props.handleSetLabel(type, {
             id: this.state.id,
             date: this.state.toYear + "/" + (this.state.toMonth + 1) + "/" + this.state.today,
             startTime: this.state.startHour + ":" + this.state.startMinute,
@@ -163,8 +176,32 @@ class ProjectForm extends React.Component {
         this.props.handleSetDisplay(false)
     }
 
+    // 修改
+
     render() {
         // 因为需要判断是否是修改还是创建
+        let btnGroup;
+        if (this.props.status == CHANGE_PROJECT) {
+            btnGroup = (<div className="btn-group">
+                <button className="btn-primary"
+                    onClick={this.handleSetLabel}
+                    data-type={CHANGE_PROJECT}
+                >修改</button>
+                <button className="btn-delete"
+                    onClick={this.handleSetLabel}
+                    data-type={REMOVE_PROJECT}
+                >删除</button>
+            </div>)
+        } else {
+            btnGroup = (<div className="btn-group">
+                <button className="btn-primary"
+                    onClick={this.handleSetLabel}
+                    data-type={ADD_PROJECT}
+                >添加</button>
+                <button className="btn-cancel"
+                >取消</button>
+            </div>)
+        }
         return (
             <div className="add_form">
                 <a href="" className="close"
@@ -217,30 +254,14 @@ class ProjectForm extends React.Component {
                     onChange={this.handleChange}
                     placeholder="你想要做什么?"
                 ></textarea>
-
-                {this.props.status == MODIFY_PROJECT ? (
-                    <div className="btn-group">
-                        <button className="btn-primary"
-                        >修改</button>
-                        <button className="btn-delete"
-                        >删除</button>
-                    </div>
-                ) : (
-                        <div className="btn-group">
-                            <button className="btn-primary"
-                                onClick={this.handleAddLabel}
-                            >添加</button>
-                            <button className="btn-cancel"
-                            >取消</button>
-                        </div>
-                    )}
+                {btnGroup}
             </div>
 
         )
     }
 }
 
-
+// 添加类型表单 
 class AddClass extends React.Component {
     constructor(props) {
         super(props);
@@ -272,6 +293,7 @@ class AddClass extends React.Component {
     }
 }
 
+// 
 class ClassSelect extends React.Component {
     constructor(props) {
         super(props)
@@ -454,169 +476,4 @@ class TimeSelect extends React.Component {
     }
 }
 
-export { AddButton, ProjectForm }
-
-
-//#region addButton 未拆分前的代码
-
-// export default class AddProject extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             flac: false,
-//             toYear: 0,
-//             toMonth: 0,
-//             today: 0,
-//             startHour: 0,
-//             startMinute: 0,
-//             endHour: 0,
-//             endMinute: 0,
-//             color: {},
-//             value: "",
-//             calendarDisplay: false
-//         }
-//         this.handleSetDate = this.handleSetDate.bind(this)
-//         this.handleSetStartTime = this.handleSetStartTime.bind(this)
-//         this.handleSetEndTime = this.handleSetEndTime.bind(this)
-//         this.handleCalendarDisplay = this.handleCalendarDisplay.bind(this)
-//         this.handleFlac = this.handleFlac.bind(this)
-//         this.handleSetColor = this.handleSetColor.bind(this)
-//         this.handleChange = this.handleChange.bind(this)
-//         this.handleAddLabel = this.handleAddLabel.bind(this)
-//     }
-
-//     handleFlac() {
-//         let flac = this.state.flac;
-//         this.setState({ flac: !flac })
-//     }
-
-//     componentDidMount() {
-//         let date = new Date();
-//         this.setState({
-//             toYear: this.props.year || date.getFullYear(),
-//             toMonth: this.props.month || date.getMonth(),
-//             today: this.props.today || date.getDate(),
-//             startHour: date.getHours(),
-//             startMinute: date.getMinutes(),
-//             endHour: date.getHours(),
-//             endMinute: date.getMinutes(),
-//             color: this.props.colors[0],
-//         })
-//     }
-
-//     handleCalendarDisplay() {
-//         this.setState({
-//             calendarDisplay: !this.state.calendarDisplay,
-//         })
-//     }
-
-//     handleSetDate(year, month, day) {
-//         this.setState(() => ({
-//             calendarDisplay: false,
-//             toYear: year - 0,
-//             toMonth: month - 0,
-//             today: day - 0,
-//         }))
-//     }
-
-//     handleSetColor(e) {
-//         this.setState({
-//             color: {
-//                 id: e.target.dataset.id,
-//                 labelName: e.target.dataset.labelName,
-//                 fontColor: e.target.dataset.color,
-//                 backgroundColor: e.target.dataset.backgroundColor
-//             }
-//         })
-//     }
-
-//     handleSetStartTime(hour, minute) {
-//         this.setState(() => ({
-//             startHour: hour,
-//             startMinute: minute
-//         }))
-//     }
-//     handleSetEndTime(hour, minute) {
-//         this.setState(() => ({
-//             endHour: hour,
-//             endMinute: minute
-//         }))
-//     }
-
-//     handleAddLabel(e) {
-//         e.preventDefault()
-//         this.props.handleAddLabel({
-//             date: this.state.toYear + "/" + (this.state.toMonth + 1) + "/" + this.state.today,
-//             startTime: this.state.startHour + ":" + this.state.startMinute,
-//             endTime: this.state.endHour + ":" + this.state.endMinute,
-//             content: this.state.value,
-//             color: this.state.color,
-//         })
-//         this.setState({ flac: false })
-//     }
-
-//     handleChange(e) {
-//         this.setState({
-//             value: e.target.value
-//         })
-//     }
-
-//     render() {
-//         return (
-//             <div className="add_project">
-//                 <div className={this.state.flac ? "add_button flac" : "add_button"}
-//                     onClick={this.handleFlac}
-//                 >
-//                     <i className="icon-add"></i>
-//                 </div>
-//                 {this.state.flac ?
-//                     <div className="add_form">
-//                         <div className="tagname">日期:</div>
-//                         <div>
-//                             <DateSelect
-//                                 handleSetDate={this.handleSetDate}
-//                                 toYear={this.state.toYear}
-//                                 toMonth={this.state.toMonth}
-//                                 today={this.state.today}
-//                                 display={this.state.calendarDisplay}
-//                                 handleDisplay={this.handleCalendarDisplay}
-//                             />
-//                         </div>
-//                         <div className="tagname">时间:</div>
-//                         <div className="time-selects">
-//                             <TimeSelect
-//                                 hour={this.state.startHour}
-//                                 minute={this.state.startMinute}
-//                                 handleSetTime={this.handleSetStartTime}
-
-//                             />
-//                             <div>-</div>
-//                             <TimeSelect
-//                                 hour={this.state.endHour}
-//                                 minute={this.state.endMinute}
-//                                 handleSetTime={this.handleSetEndTime}
-//                             />
-//                         </div>
-//                         <div className="tagname">类型:</div>
-//                         <div className="box">
-//                             <ClassSelect
-//                                 colors={this.props.colors}
-//                                 color={this.state.color}
-//                                 handleSetColor={this.handleSetColor}
-//                             />
-//                         </div>
-//                         <div className="tagname">备注:</div>
-//                         <textarea className="content" name="content" id="" cols="30" rows="10"
-//                             value={this.state.value}
-//                             onChange={this.handleChange}
-//                             placeholder="你想要做什么?"
-//                         ></textarea>
-//                         <button className="submit" onClick={this.handleAddLabel}>确定</button>
-//                         {/*选择日期/选择开始时间/选择结束时间/选择标签名称/写入内容/好了*/}
-//                     </div> : ""}
-//             </div>
-//         )
-//     }
-// }
-
-//#endregion
+export { AddButton, ProjectForm, TYPE }

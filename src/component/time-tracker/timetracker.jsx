@@ -91,9 +91,8 @@ export default class Timetracker extends React.Component {
                     />
                 </div>
                 <AddButton
-                    status="MODIFY_PROJECT"
                     colors={this.props.colors}
-                    handleAddLabel={this.props.handleAddLabel}
+                    handleSetLabel={this.props.handleSetLabel}
                 />
             </div>
         )

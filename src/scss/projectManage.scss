@@ -18,71 +18,98 @@
   .flac {
     transform: rotate(45deg);
   }
-  .add_form {
-    // padding: 8px;
-    text-align: center;
-    position: fixed;
-    width: 375px;
-    // height: 480px;
-    background-color: #fefefe;
-    border-radius: 8px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0px 0px 12px #dfdfdf;
-    z-index: 10;
-    padding: 36px 4px;
+}
 
-    .tagname {
-      padding: 4px 0;
-      font-weight: 700;
-      font-size: 14px;
-      color: #797979;
-      width: 315px;
-      margin: 0 auto;
-      text-align: left;
-    }
+.add_form {
+  // padding: 8px;
+  text-align: center;
+  position: fixed;
+  width: 375px;
+  // height: 480px;
+  background-color: #fefefe;
+  border-radius: 8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 0px 12px #dfdfdf;
+  z-index: 10;
+  padding: 36px 4px;
 
-    >.box {
-      padding: 4px 0;
-      width: 315px;
-      margin: 0 auto;
-      border-radius: 8px;
-    }
+  .close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #a8a8a8;
+    text-decoration: none;
+    font-size: 18px;
+  }
 
-    .content {
-      cursor: auto;
-      padding: 8px;
-      outline: none;
-      resize: none;
-      width: 300px;
-      height: 120px;
-      border-radius: 8px;
-      border: 1px solid #e3e3e3;
-    }
-    .submit {
-      margin-top: 24px;
-      width: 80%;
-      background-color: #00b7f7;
-      border: none;
+  .btn-group {
+    margin: 0 auto;
+    margin-top: 24px;
+    width: 80%;
+    border: none;
+    display: flex;
+    > button {
+      margin: 0 8px;
+      flex: 1;
       border-radius: 4px;
-      height: 32px;
-      font-size: 18px;
-      color: #fff;
+      border: none;
       outline: none;
+      height: 32px;
+      // margin: 0 auto;
     }
-    
-    >.time-selects {
-      width: 315px;
-      margin: 0 auto;
-      display: flex;
-      padding: 12px;
-      >div:nth-child(2) {
-        font-size: 32px;
-        width: 84px;
-        height: 70px;
-        line-height: 70px;
-      }
+  }
+
+  .tagname {
+    padding: 4px 0;
+    font-weight: 700;
+    font-size: 14px;
+    color: #797979;
+    width: 315px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  > .box {
+    padding: 4px 0;
+    width: 315px;
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+
+  .content {
+    cursor: auto;
+    padding: 8px;
+    outline: none;
+    resize: none;
+    width: 300px;
+    height: 120px;
+    border-radius: 8px;
+    border: 1px solid #e3e3e3;
+  }
+  .submit {
+    margin-top: 24px;
+    width: 80%;
+    background-color: #00b7f7;
+    border: none;
+    border-radius: 4px;
+    height: 32px;
+    font-size: 18px;
+    color: #fff;
+    outline: none;
+  }
+
+  > .time-selects {
+    width: 315px;
+    margin: 0 auto;
+    display: flex;
+    padding: 12px;
+    > div:nth-child(2) {
+      font-size: 32px;
+      width: 84px;
+      height: 70px;
+      line-height: 70px;
     }
   }
 }

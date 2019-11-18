@@ -31,7 +31,8 @@ export default class App extends React.Component {
     handleAddLabel(label) { // 添加 label
         // id 怎么指定呢 // 为了最大可修改性, label 的 id 得自己定义, 还有一个格式的验证
         let labels = this.state.labels;
-        label = {id: new Date().getTime(), ...label}
+        label = { ...label, id: new Date().getTime() }
+        console.log(label)
         this.setState({
             labels: [
                 ...labels,

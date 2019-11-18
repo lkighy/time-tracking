@@ -2,7 +2,7 @@ import React from "react";
 import Calendar from "./calendar.jsx";
 import Timesheet from "./timesheet.jsx";
 import Projects from "./project.jsx";
-import AddProject from "./addProject.jsx";
+import {AddButton} from "./projectManage.jsx";
 // import { state, StateContext } from "context/time_context";
 
 // import "scss/Timetracker.scss";
@@ -90,7 +90,7 @@ export default class Timetracker extends React.Component {
                         dateRange={this.state.dateRange}
                     />
                 </div>
-                <AddProject
+                <AddButton
                     colors={this.props.colors}
                     handleAddLabel={this.props.handleAddLabel}
                 />

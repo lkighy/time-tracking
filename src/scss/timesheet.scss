@@ -75,11 +75,9 @@
 
 .timeline {
   position: absolute;
-  // z-index: 1;
-  // background-color: #FE443F;
   .dot {
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background-color: #fe443f;
   }
@@ -94,6 +92,7 @@
   .line {
     position: absolute;
     top: 50%;
+    transform: translate(0, -50%);
     // width: 98%;
     padding: 0;
     margin: 0;

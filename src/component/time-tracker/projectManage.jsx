@@ -1,6 +1,6 @@
 import React from "react";
 import Calendar from "./calendar.jsx";
-import "scss/addProject.scss";
+import "scss/projectManage.scss";
 
 export default class AddProject extends React.Component {
     constructor(props) {
@@ -95,7 +95,7 @@ export default class AddProject extends React.Component {
             content: this.state.value,
             color: this.state.color,
         })
-        this.setState({flac: false})
+        this.setState({ flac: false })
     }
 
     handleChange(e) {
@@ -112,54 +112,279 @@ export default class AddProject extends React.Component {
                 >
                     <i className="icon-add"></i>
                 </div>
-                {this.state.flac ? <div className="add_form">
-                    <div className="tagname">日期:</div>
-                    <div>
-                        <DateSelect
-                            handleSetDate={this.handleSetDate}
-                            toYear={this.state.toYear}
-                            toMonth={this.state.toMonth}
-                            today={this.state.today}
-                            display={this.state.calendarDisplay}
-                            handleDisplay={this.handleCalendarDisplay}
-                        />
-                    </div>
-                    <div className="tagname">时间:</div>
-                    <div className="time-selects">
-                        <TimeSelect
-                            hour={this.state.startHour}
-                            minute={this.state.startMinute}
-                            handleSetTime={this.handleSetStartTime}
+                {this.state.flac ?
+                    <div className="add_form">
+                        <div className="tagname">日期:</div>
+                        <div>
+                            <DateSelect
+                                handleSetDate={this.handleSetDate}
+                                toYear={this.state.toYear}
+                                toMonth={this.state.toMonth}
+                                today={this.state.today}
+                                display={this.state.calendarDisplay}
+                                handleDisplay={this.handleCalendarDisplay}
+                            />
+                        </div>
+                        <div className="tagname">时间:</div>
+                        <div className="time-selects">
+                            <TimeSelect
+                                hour={this.state.startHour}
+                                minute={this.state.startMinute}
+                                handleSetTime={this.handleSetStartTime}
 
-                        />
-                        <div>-</div>
-                        <TimeSelect
-                            hour={this.state.endHour}
-                            minute={this.state.endMinute}
-                            handleSetTime={this.handleSetEndTime}
-                        />
-                    </div>
-                    <div className="tagname">类型:</div>
-                    <div className="box">
-                        <ClassSelect
-                            colors={this.props.colors}
-                            color={this.state.color}
-                            handleSetColor={this.handleSetColor}
-                        />
-                    </div>
-                    <div className="tagname">备注:</div>
-                    <textarea className="content" name="content" id="" cols="30" rows="10"
-                        value={this.state.value}
-                        onChange={this.handleChange}
-                        placeholder="你想要做什么?"
-                    ></textarea>
-                    <button className="submit" onClick={this.handleAddLabel}>确定</button>
-                    {/*选择日期/选择开始时间/选择结束时间/选择标签名称/写入内容/好了*/}
-                </div> : ""}
+                            />
+                            <div>-</div>
+                            <TimeSelect
+                                hour={this.state.endHour}
+                                minute={this.state.endMinute}
+                                handleSetTime={this.handleSetEndTime}
+                            />
+                        </div>
+                        <div className="tagname">类型:</div>
+                        <div className="box">
+                            <ClassSelect
+                                colors={this.props.colors}
+                                color={this.state.color}
+                                handleSetColor={this.handleSetColor}
+                            />
+                        </div>
+                        <div className="tagname">备注:</div>
+                        <textarea className="content" name="content" id="" cols="30" rows="10"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            placeholder="你想要做什么?"
+                        ></textarea>
+                        <button className="submit" onClick={this.handleAddLabel}>确定</button>
+                        {/*选择日期/选择开始时间/选择结束时间/选择标签名称/写入内容/好了*/}
+                    </div> : ""}
             </div>
         )
     }
 }
+
+class AddButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            display: false
+        }
+        this.handleSetDisplay = this.handleSetDisplay.bind(this)
+    }
+
+    handleSetDisplay(display) {
+        this.setState({ display })
+    }
+
+    render() {
+        return (
+            <div className="add_project">
+                <div className={this.state.display ? "add_button flac" : "add_button"}
+                    onClick={() => this.setState({ display: !this.state.display })}
+                >
+                    <i className="icon-add"></i>
+                </div>
+                {this.state.display ?
+                    <ProjectForm
+                        handleSetDisplay={this.handleSetDisplay}
+
+                        colors={this.props.colors}
+                        handleAddLabel={this.props.handleAddLabel}
+                    /> : ""
+                }
+            </div>
+        )
+    }
+}
+
+class ProjectForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: 0,
+            toYear: 0,
+            toMonth: 0,
+            today: 0,
+            startTime: "",
+            endTime: "",
+            startHour: 0,
+            startMinute: 0,
+            endHour: 0,
+            endMinute: 0,
+            color: {},
+            value: "",
+            calendarDisplay: false
+        }
+        this.handleSetDate = this.handleSetDate.bind(this)
+        this.handleSetStartTime = this.handleSetStartTime.bind(this)
+        this.handleSetEndTime = this.handleSetEndTime.bind(this)
+        this.handleCalendarDisplay = this.handleCalendarDisplay.bind(this)
+        this.handleSetColor = this.handleSetColor.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleAddLabel = this.handleAddLabel.bind(this)
+        this.handleClose = this.handleClose.bind(this)
+    }
+
+    componentDidMount() {
+        let date = new Date();
+        if (this.props.date && this.props.startTime && this.props.endTime) {
+            let [year, month, day] = this.props.date.split("/")
+            let [startHour, startMinute] = this.props.startTime(":")
+            let [endHour, endMinute] = this.props.endTime(":")
+            this.setState({
+                id: this.props.id,
+                toYear: year,
+                toMonth: month,
+                today: day,
+                startHour,
+                startMinute,
+                endHour,
+                endMinute,
+                color: this.props.colors[0]
+            })
+        } else {
+            this.setState({
+                toYear: date.getFullYear(),
+                toMonth: date.getMonth(),
+                today: date.getDate(),
+                startHour: date.getHours(),
+                startMinute: date.getMinutes(),
+                endHour: date.getHours(),
+                endMinute: date.getMinutes(),
+                color: this.props.colors[0],
+            })
+        }
+    }
+
+    handleCalendarDisplay() {
+        this.setState({
+            calendarDisplay: !this.state.calendarDisplay,
+        })
+    }
+
+    handleSetDate(year, month, day) {
+        this.setState(() => ({
+            calendarDisplay: false,
+            toYear: year - 0,
+            toMonth: month - 0,
+            today: day - 0,
+        }))
+    }
+
+    handleSetColor(e) {
+        this.setState({
+            color: {
+                id: e.target.dataset.id,
+                labelName: e.target.dataset.labelName,
+                fontColor: e.target.dataset.color,
+                backgroundColor: e.target.dataset.backgroundColor
+            }
+        })
+    }
+
+    handleSetStartTime(hour, minute) {
+        this.setState(() => ({
+            startHour: hour,
+            startMinute: minute
+        }))
+    }
+
+    handleSetEndTime(hour, minute) {
+        this.setState(() => ({
+            endHour: hour,
+            endMinute: minute
+        }))
+    }
+
+    handleAddLabel(e) {
+        e.preventDefault()
+        this.props.handleAddLabel({
+            id: this.state.id,
+            date: this.state.toYear + "/" + (this.state.toMonth + 1) + "/" + this.state.today,
+            startTime: this.state.startHour + ":" + this.state.startMinute,
+            endTime: this.state.endHour + ":" + this.state.endMinute,
+            content: this.state.value,
+            color: this.state.color,
+        })
+        this.props.handleSetDisplay(false)
+    }
+
+    handleChange(e) {
+        this.setState({
+            value: e.target.value
+        })
+    }
+
+    handleClose(e) {
+        e.preventDefault()
+        this.props.handleSetDisplay(false)
+    }
+
+    render() {
+        // 因为需要判断是否是修改还是创建
+        return (
+            <div className="add_form">
+                <a href="" className="close"
+                    onClick={this.handleClose}
+                >
+                    <i className="icon-close"></i>
+                </a>
+                <div className="tagname">日期:</div>
+                <div>
+                    <DateSelect
+                        toYear={this.state.toYear}
+                        toMonth={this.state.toMonth}
+                        today={this.state.today}
+                        display={this.state.calendarDisplay}
+
+                        handleDisplay={this.handleCalendarDisplay}
+                        handleSetDate={this.handleSetDate}
+                    />
+                </div>
+                <div className="tagname">时间:</div>
+                <div className="time-selects">
+                    <TimeSelect
+                        hour={this.state.startHour}
+                        minute={this.state.startMinute}
+
+                        handleSetTime={this.handleSetStartTime}
+
+                    />
+                    <div>-</div>
+                    <TimeSelect
+                        hour={this.state.endHour}
+                        minute={this.state.endMinute}
+
+                        handleSetTime={this.handleSetEndTime}
+                    />
+                </div>
+                <div className="tagname">类型:</div>
+                <div className="box">
+                    <ClassSelect
+                        colors={this.props.colors}
+                        color={this.state.color}
+
+                        handleSetColor={this.handleSetColor}
+                    />
+                </div>
+                <div className="tagname">备注:</div>
+                <textarea className="content" name="content" id="" cols="30" rows="10"
+                    value={this.state.value}
+
+                    onChange={this.handleChange}
+                    placeholder="你想要做什么?"
+                ></textarea>
+                <div className="btn-group">
+                    <button
+                        onClick={this.handleAddLabel}
+                    >修改/添加</button>
+                    <button>取消</button>
+                </div>
+            </div>
+
+        )
+    }
+}
+
 
 class AddClass extends React.Component {
     constructor(props) {
@@ -181,9 +406,9 @@ class AddClass extends React.Component {
         return (
             <div>
                 <div className="labname">标签名称:</div>
-                <input type="text" className="label-name"/>
+                <input type="text" className="label-name" />
                 <div className="labname">字体颜色:</div>
-                <div>颜色选择块啊喂</div> 
+                <div>颜色选择块啊喂</div>
                 <div className="labname">背景颜色:</div>
                 <div>颜色选择块</div>
                 <div className="labname">预览:</div>
@@ -257,7 +482,6 @@ class DateSelect extends React.Component {
         )
     }
 }
-
 
 // 时间选择: 接收传入的时间(时:分), 接收参数修改的方法 handleTime(hour, minute), 只需要这两个即可,
 class TimeSelect extends React.Component {
@@ -374,3 +598,5 @@ class TimeSelect extends React.Component {
         )
     }
 }
+
+export { AddButton, ProjectForm }

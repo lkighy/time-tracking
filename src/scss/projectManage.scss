@@ -57,7 +57,19 @@
       border: none;
       outline: none;
       height: 32px;
-      // margin: 0 auto;
+      color: #fff;
+      font-size: 16px;
+    }
+    .btn-modify {
+      background-color: #eeeeee;
+    }
+
+    .btn-delete {
+      background-color: #d44d4d;
+    }
+
+    .btn-primary {
+      background-color: #349cff;
     }
   }
 

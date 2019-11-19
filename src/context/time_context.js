@@ -60,6 +60,18 @@ let state = {
             backgroundColor: "#fec25a",
         },
         content: "今天也很 OK 喔"
+    },{
+        id: 3,
+        date: "2019/11/19",
+        startTime: "10:19",
+        endTime: "15:30",
+        color: {
+            id: 1,
+            labelName: "出行",
+            fontColor: "#ffffff",
+            backgroundColor: "#f3c25a",
+        },
+        content: "今天太阳好好"
     }],
 }
 

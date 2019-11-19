@@ -31,6 +31,7 @@ export default class App extends React.Component {
 
     handleSetLabel(type, label) {
         let labels = this.state.labels;
+        let i;
         switch (type) {
             case TYPE.ADD_PROJECT: // 添加操作
                 label = { ...label, id: new Date().getTime() }
@@ -42,7 +43,7 @@ export default class App extends React.Component {
                 })
                 return true
             case TYPE.CHANGE_PROJECT: // 修改操作
-                labels.findIndex((v) => (v.id == label.id))
+                i = labels.findIndex((v) => (v.id == label.id))
                 if (i < 0) {
                     return false
                 }
@@ -50,7 +51,7 @@ export default class App extends React.Component {
                 this.setState(labels)
                 return true
             case TYPE.REMOVE_PROJECT: // 删除操作
-                labels.findIndex((v) => (v.id == label.id))
+                i = labels.findIndex((v) => (v.id == label.id))
                 if (i < 0) {
                     return false
                 }

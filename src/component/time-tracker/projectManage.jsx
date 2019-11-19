@@ -91,20 +91,21 @@ class ProjectForm extends React.Component {
 
     componentDidMount() {
         let date = new Date();
-        if (this.props.statue == CHANGE_PROJECT) { // 是否是修改
+        if (this.props.status == CHANGE_PROJECT) { // 是否是修改
             let [year, month, day] = this.props.date.split("/")
-            let [startHour, startMinute] = this.props.startTime(":")
-            let [endHour, endMinute] = this.props.endTime(":")
+            let [startHour, startMinute] = this.props.startTime.split(":")
+            let [endHour, endMinute] = this.props.endTime.split(":")
             this.setState({
                 id: this.props.id,
-                toYear: year,
-                toMonth: month,
-                today: day,
-                startHour,
-                startMinute,
-                endHour,
-                endMinute,
-                color: this.props.colors[0]
+                toYear: year - 0,
+                toMonth: month - 1,
+                today: day - 0,
+                startHour: startHour - 0,
+                startMinute: startMinute - 0,
+                endHour: endHour - 0,
+                endMinute: endMinute - 0,
+                value: this.props.content,
+                color: this.props.color
             })
         } else {
             this.setState({
@@ -201,10 +202,12 @@ class ProjectForm extends React.Component {
     }
 
     handleMouseDown(e) { //按下鼠标时触发
-        e.target.onmousemove = this.handleMouseMove;
+        if (e.target == this.ref.current) {
+            e.target.onmousemove = this.handleMouseMove;
+        }
     }
 
-    handleRemoveMouse() {
+    handleRemoveMouse(e) {
         this.ref.current.onmousemove = (e) => e.preventDefault();
     }
 
@@ -231,6 +234,7 @@ class ProjectForm extends React.Component {
                     data-type={ADD_PROJECT}
                 >添加</button>
                 <button className="btn-cancel"
+                    onClick={this.handleClose}
                 >取消</button>
             </div>)
         }
@@ -448,7 +452,6 @@ class TimeSelect extends React.Component {
     }
 
     handleMinuteWheel(e) {
-        // console.log("Y滚动: ", e.deltaY / 100)
         let minute = this.props.minute;
         minute = minute + e.deltaY / 100
         if (minute > 59) {

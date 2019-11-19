@@ -65,8 +65,15 @@ class ProjectForm extends React.Component {
             endMinute: 0,
             color: {},
             value: "",
-            calendarDisplay: false
+            calendarDisplay: false,
+            position: {
+                x: 0,
+                y: 0,
+            }
         }
+
+        this.ref = React.createRef();
+
         this.handleSetDate = this.handleSetDate.bind(this)
         this.handleSetStartTime = this.handleSetStartTime.bind(this)
         this.handleSetEndTime = this.handleSetEndTime.bind(this)
@@ -74,6 +81,10 @@ class ProjectForm extends React.Component {
         this.handleSetColor = this.handleSetColor.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleClose = this.handleClose.bind(this)
+
+        this.handleMouseDown = this.handleMouseDown.bind(this)
+        this.handleRemoveMouse = this.handleRemoveMouse.bind(this)
+        this.handleMouseMove = this.handleMouseMove.bind(this)
 
         this.handleSetLabel = this.handleSetLabel.bind(this)
     }
@@ -107,6 +118,12 @@ class ProjectForm extends React.Component {
                 color: this.props.colors[0],
             })
         }
+
+        // 设置初始化坐标
+        let y = window.innerHeight / 2 // 初始化高度
+        let x = window.innerWidth / 2 // 初始化宽度
+
+        this.setState({ position: { x, y } })
     }
 
     handleCalendarDisplay() {
@@ -149,6 +166,16 @@ class ProjectForm extends React.Component {
         }))
     }
 
+    handleChange(e) {
+        this.setState({
+            value: e.target.value
+        })
+    }
+
+    handleClose(e) {
+        e.preventDefault()
+        this.props.handleSetDisplay(false)
+    }
 
     handleSetLabel(e) {
 
@@ -165,18 +192,23 @@ class ProjectForm extends React.Component {
         this.props.handleSetDisplay(false)
     }
 
-    handleChange(e) {
-        this.setState({
-            value: e.target.value
-        })
+    handleMouseMove(e) { // 鼠标移动事件
+        let x = this.state.position.x;
+        let y = this.state.position.y;
+        y = y + e.movementY;
+        x = x + e.movementX;
+        this.setState({ position: { x, y } })
     }
 
-    handleClose(e) {
-        e.preventDefault()
-        this.props.handleSetDisplay(false)
+    handleMouseDown(e) { //按下鼠标时触发
+        e.target.onmousemove = this.handleMouseMove;
     }
 
-    // 修改
+    handleRemoveMouse() {
+        this.ref.current.onmousemove = (e) => e.preventDefault();
+    }
+
+
 
     render() {
         // 因为需要判断是否是修改还是创建
@@ -203,7 +235,15 @@ class ProjectForm extends React.Component {
             </div>)
         }
         return (
-            <div className="add_form">
+            <div className="add_form" ref={this.ref}
+                onMouseDown={this.handleMouseDown}
+                onMouseUp={this.handleRemoveMouse}
+                onMouseLeave={this.handleRemoveMouse}
+                style={{
+                    left: this.state.position.x,
+                    top: this.state.position.y,
+                }}
+            >
                 <a href="" className="close"
                     onClick={this.handleClose}
                 >

@@ -76,7 +76,6 @@ class Project extends React.Component {
 
         // 点击显示 修改列表
         return (<div className={style}
-            onClick=""
         >
             <span className="label-name">{this.props.color.labelName}</span>
             <span className="content">{this.props.content}</span>

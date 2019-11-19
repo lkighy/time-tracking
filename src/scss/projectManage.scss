@@ -129,6 +129,10 @@
   }
 }
 
+.add_form:active {
+  cursor: move;
+}
+
 .date-select {
   position: relative;
   width: 315px;

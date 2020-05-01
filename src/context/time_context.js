@@ -1,4 +1,8 @@
 import React from "react";
+import {getStore} from "../utils/storage";
+
+let labels = JSON.parse(getStore("labels"))
+// let colors = JSON.parse(getStore("labelColors"))
 
 let state = {
     weekArr: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
@@ -36,31 +40,7 @@ let state = {
         fontColor: "#ffffff",
         backgroundColor: "skyblue"
     }],
-    labels: [{
-        id: 1,
-        date: "2019/10/25",
-        startTime: "12:00",
-        endTime: "15:00",
-        color: {
-            id: 1,
-            labelName: "出行",
-            fontColor: "#ffffff",
-            backgroundColor: "#fec25a"
-        },
-        content: "今天出行很 OK 啦"
-    }, {
-        id: 2,
-        date: "2019/10/24",
-        startTime: "14:00",
-        endTime: "16:00",
-        color: {
-            id: 1,
-            labelName: "出行",
-            fontColor: "#ffffff",
-            backgroundColor: "#fec25a",
-        },
-        content: "今天也很 OK 喔"
-    }],
+    labels: labels ? labels : [],
 }
 
 const StateContext = React.createContext(state);

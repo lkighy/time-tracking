@@ -6,6 +6,11 @@
 <img src="./preview/2.png" width="49%"/>
 <img src="./preview/3.png" width="49%"/>
 
+## todo 
+
+- [x] 添加本地缓存
+- [ ] 添加修改删除标签
+
 ## component 
 组件
 

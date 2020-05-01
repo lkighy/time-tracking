@@ -2,6 +2,7 @@ import Timetracker from "./timetracker.jsx";
 import React from "react";
 import { state } from "context/time_context";
 import { TYPE } from "./projectManage.jsx";
+import {setStore} from "../../utils/storage";
 
 
 export default class App extends React.Component {
@@ -31,31 +32,33 @@ export default class App extends React.Component {
 
     handleSetLabel(type, label) {
         let labels = this.state.labels;
+        let i;
         switch (type) {
             case TYPE.ADD_PROJECT: // 添加操作
                 label = { ...label, id: new Date().getTime() }
+                labels = [...labels, label]
                 this.setState({
-                    labels: [
-                        ...labels,
-                        label
-                    ]
+                    labels:labels
                 })
+                setStore("labels", labels)
                 return true
             case TYPE.CHANGE_PROJECT: // 修改操作
-                labels.findIndex((v) => (v.id == label.id))
+                i = labels.findIndex((v) => (v.id == label.id))
                 if (i < 0) {
                     return false
                 }
                 labels[i] = label
                 this.setState(labels)
+                setStore("labels", labels)
                 return true
             case TYPE.REMOVE_PROJECT: // 删除操作
-                labels.findIndex((v) => (v.id == label.id))
+                i = labels.findIndex((v) => (v.id == label.id))
                 if (i < 0) {
                     return false
                 }
                 labels.splice(i, 1)
                 this.setState(labels)
+                setStore("labels", labels)
                 return true
         }
     }

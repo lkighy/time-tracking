@@ -2,7 +2,7 @@ import React from "react";
 import Calendar from "./calendar.jsx";
 import Timesheet from "./timesheet.jsx";
 import Projects from "./project.jsx";
-import {AddButton} from "./projectManage.jsx";
+import { AddButton } from "./projectManage.jsx";
 // import { state, StateContext } from "context/time_context";
 
 // import "scss/Timetracker.scss";
@@ -24,7 +24,7 @@ export default class Timetracker extends React.Component {
 
     componentDidMount() {
         let date = new Date();
-    
+
         this.handleSetDate(
             this.props.year || date.getFullYear(),
             this.props.month || date.getMonth(),
@@ -71,6 +71,9 @@ export default class Timetracker extends React.Component {
                     <Box tagName="日程">
                         <Projects
                             labels={this.props.labels}
+                            colors={this.props.colors}
+
+                            handleSetLabel={this.props.handleSetLabel}
 
                             dateRange={this.state.dateRange}
                         />

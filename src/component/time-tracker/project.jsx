@@ -1,10 +1,33 @@
 import React from "react";
 import "scss/project.scss";
 
+import { ProjectForm, TYPE } from "./projectManage.jsx";
+
 
 export default class Projects extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            display: false,
+            id: 0,
+            color: {},
+            content: "",
+            date: "",
+            startTime: "",
+            endTime: "",
+        }
+
+        this.handleSetDisplay = this.handleSetDisplay.bind(this)
+        this.handleSetData = this.handleSetData.bind(this)
+    }
+
+    handleSetDisplay(display) {
+        this.setState({ display })
+    }
+
+    handleSetData(label) {
+        this.setState({ ...label })
     }
 
     render() {
@@ -12,17 +35,39 @@ export default class Projects extends React.Component {
         this.props.labels.forEach((lab) => {
             if (this.props.dateRange.join(",").indexOf(lab.date) >= 0) {
                 projects.push(
-                    <Project key={lab.id} {...lab} />
+                    <Project key={lab.id} {...lab}
+                        handleSetData={this.handleSetData}
+                        handleSetDisplay={this.handleSetDisplay}
+                    />
                 )
             }
         })
         // 判空, 如果为空, 则表示这周没有任务 ...
         return (
             <div className="projects">
-                {projects.length == 0 ?<div className="empty">
+                {projects.length == 0 ? <div className="empty">
                     这周还没有任务喔, 快去新建一个吧
                 </div> : ""}
                 {projects}
+
+                {/* 浮动的窗口, 这是一个修改的窗口,  */}
+                {this.state.display ?
+                    (<ProjectForm
+                        status={TYPE.CHANGE_PROJECT} // 设定这是 修改状态
+                        handleSetDisplay={this.handleSetDisplay}
+
+                        handleSetLabel={this.props.handleSetLabel}
+
+                        id={this.state.id}
+                        date={this.state.date}
+                        startTime={this.state.startTime}
+                        endTime={this.state.endTime}
+                        color={this.state.color}
+                        content={this.state.content}
+
+                        colors={this.props.colors}
+                    />) : ""
+                }
             </div>
         )
     }
@@ -41,6 +86,7 @@ class Project extends React.Component {
             status: 0
         }
         this.handleStatus = this.handleStatus.bind(this)
+        this.handleSetData = this.handleSetData.bind(this)
     }
 
     componentDidMount() {
@@ -62,8 +108,21 @@ class Project extends React.Component {
         }
     }
 
-    // 需要判断状态码?
+    handleSetData() {
 
+        this.props.handleSetData({
+            id: this.props.id,
+            color: this.props.color,
+            content: this.props.content,
+            date: this.props.date,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
+        })
+
+        this.props.handleSetDisplay(true)
+    }
+
+    // 需要判断状态码?
     render() {
         let style;
         if (this.state.status == 0) {
@@ -76,6 +135,7 @@ class Project extends React.Component {
 
         // 点击显示 修改列表
         return (<div className={style}
+            onClick={this.handleSetData}
         >
             <span className="label-name">{this.props.color.labelName}</span>
             <span className="content">{this.props.content}</span>
